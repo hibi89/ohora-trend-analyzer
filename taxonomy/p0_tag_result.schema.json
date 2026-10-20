@@ -1,0 +1,1099 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/hibi89/ohora-trend-analyzer/blob/main/taxonomy/p0_tag_result.schema.json",
+  "title": "OHORA Analyzer v1.1 normalized P0 tagging result (post-validation/persistence contract)",
+  "description": "Successful analyzed image only; non-nail/unavailable/video statuses are job-level. Independent validation contract, NOT directly the constrained LLM output schema. All 14 facets exactly once; 7 P0 evaluated, 7 P1 not_evaluated.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "post_id",
+    "media_id",
+    "taxonomy_version",
+    "model_id",
+    "prompt_version",
+    "analyzed_at",
+    "analysis_input_hash",
+    "is_nail_design",
+    "review_status",
+    "source_provenance",
+    "facet_results"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "analyzer_tag_result_v0_1"
+    },
+    "post_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "media_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_media_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_observation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "taxonomy_version": {
+      "const": "1.1.0"
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prompt_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "analyzed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "analysis_input_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "is_nail_design": {
+      "const": true
+    },
+    "review_status": {
+      "enum": [
+        "unreviewed",
+        "approved",
+        "corrected",
+        "rejected"
+      ]
+    },
+    "source_provenance": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "facet_results": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": {
+        "type": "object",
+        "required": [
+          "facet_id",
+          "status",
+          "tag_ids",
+          "confidence",
+          "evidence_source",
+          "evidence_note"
+        ],
+        "properties": {
+          "facet_id": {
+            "enum": [
+              "F01",
+              "F02",
+              "F03",
+              "F04",
+              "F05",
+              "F06",
+              "F07",
+              "F08",
+              "F09",
+              "F10",
+              "F11",
+              "F12",
+              "F13",
+              "F14"
+            ]
+          },
+          "status": {
+            "enum": [
+              "observed",
+              "unknown",
+              "not_applicable",
+              "not_evaluated"
+            ]
+          },
+          "tag_ids": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "confidence": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "evidence_source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "image",
+              "caption",
+              "both",
+              "human",
+              null
+            ]
+          },
+          "evidence_note": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "scope": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "observed"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "minItems": 1
+                },
+                "evidence_source": {
+                  "enum": [
+                    "image",
+                    "caption",
+                    "both",
+                    "human"
+                  ]
+                },
+                "evidence_note": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "maxItems": 0
+                },
+                "evidence_note": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "not_evaluated"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "maxItems": 0
+                },
+                "confidence": {
+                  "type": "null"
+                },
+                "evidence_source": {
+                  "type": "null"
+                },
+                "evidence_note": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F01"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F01.white",
+                      "F01.black",
+                      "F01.gray",
+                      "F01.nude",
+                      "F01.beige",
+                      "F01.pink",
+                      "F01.red",
+                      "F01.coral",
+                      "F01.orange",
+                      "F01.yellow",
+                      "F01.green",
+                      "F01.blue",
+                      "F01.purple",
+                      "F01.brown",
+                      "F01.gold",
+                      "F01.silver",
+                      "F01.rose_gold",
+                      "F01.multicolor"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F02"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F02.pastel",
+                      "F02.muted",
+                      "F02.vivid",
+                      "F02.deep",
+                      "F02.dark",
+                      "F02.dusty",
+                      "F02.neon",
+                      "F02.light",
+                      "F02.warm",
+                      "F02.cool",
+                      "F02.neutral_tone"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F03"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F03.opaque",
+                      "F03.semi_transparent",
+                      "F03.transparent",
+                      "F03.sheer",
+                      "F03.syrup",
+                      "F03.jelly",
+                      "F03.milky",
+                      "F03.layered_color"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F04"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F04.glossy",
+                      "F04.semi_matte",
+                      "F04.matte",
+                      "F04.glazed",
+                      "F04.mirror",
+                      "F04.pearlescent",
+                      "F04.opalescent",
+                      "F04.holographic"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F05"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F05.cat_eye",
+                      "F05.velvet",
+                      "F05.chrome",
+                      "F05.glitter",
+                      "F05.shimmer",
+                      "F05.flash",
+                      "F05.crushed_shell",
+                      "F05.glass_like",
+                      "F05.sugar",
+                      "F05.foil",
+                      "F05.aurora",
+                      "F05.metallic"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F06"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F06.full_color",
+                      "F06.french",
+                      "F06.gradient",
+                      "F06.ombre",
+                      "F06.blush",
+                      "F06.aura",
+                      "F06.color_block",
+                      "F06.negative_space",
+                      "F06.half_moon",
+                      "F06.outline"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F07"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F07.classic",
+                      "F07.micro",
+                      "F07.deep",
+                      "F07.double",
+                      "F07.diagonal",
+                      "F07.side",
+                      "F07.reverse",
+                      "F07.v_line",
+                      "F07.wave",
+                      "F07.scalloped"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F08"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F08.dots",
+                      "F08.stripes",
+                      "F08.check",
+                      "F08.gingham",
+                      "F08.marble",
+                      "F08.tie_dye",
+                      "F08.tortoiseshell",
+                      "F08.leopard",
+                      "F08.zebra",
+                      "F08.abstract_wave",
+                      "F08.lace",
+                      "F08.plaid"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F09"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F09.flower",
+                      "F09.ribbon",
+                      "F09.heart",
+                      "F09.star",
+                      "F09.cherry",
+                      "F09.butterfly",
+                      "F09.cloud",
+                      "F09.snowflake",
+                      "F09.shell",
+                      "F09.character",
+                      "F09.lettering",
+                      "F09.fruit",
+                      "F09.moon",
+                      "F09.animal"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F10"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F10.rhinestone",
+                      "F10.pearl",
+                      "F10.stud",
+                      "F10.chain",
+                      "F10.charm",
+                      "F10.three_d_ribbon",
+                      "F10.embossed_flower",
+                      "F10.raised_gel_drop",
+                      "F10.sculpted_3d",
+                      "F10.bead"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "enum": [
+                    "observed",
+                    "unknown",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F11"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F11.full_surface",
+                      "F11.tip",
+                      "F11.cuticle",
+                      "F11.center",
+                      "F11.side",
+                      "F11.accent_nails",
+                      "F11.all_art",
+                      "F11.mix_match",
+                      "F11.asymmetric",
+                      "F11.scattered",
+                      "F11.clustered"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F12"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F12.round",
+                      "F12.oval",
+                      "F12.square",
+                      "F12.squoval",
+                      "F12.almond",
+                      "F12.coffin",
+                      "F12.stiletto",
+                      "F12.short",
+                      "F12.medium",
+                      "F12.long"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F13"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F13.minimal",
+                      "F13.clean",
+                      "F13.lovely",
+                      "F13.coquette",
+                      "F13.balletcore",
+                      "F13.y2k",
+                      "F13.kitsch",
+                      "F13.vintage",
+                      "F13.gothic",
+                      "F13.luxury",
+                      "F13.natural",
+                      "F13.sporty",
+                      "F13.edgy"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "facet_id": {
+                  "const": "F14"
+                }
+              },
+              "required": [
+                "facet_id"
+              ]
+            },
+            "then": {
+              "properties": {
+                "tag_ids": {
+                  "items": {
+                    "enum": [
+                      "F14.spring",
+                      "F14.summer",
+                      "F14.autumn",
+                      "F14.winter",
+                      "F14.christmas",
+                      "F14.halloween",
+                      "F14.valentines_day",
+                      "F14.wedding",
+                      "F14.daily",
+                      "F14.vacation",
+                      "F14.party",
+                      "F14.festival"
+                    ]
+                  },
+                  "uniqueItems": true
+                },
+                "status": {
+                  "const": "not_evaluated"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "structure": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "evaluated_facets": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "F01",
+          "F03",
+          "F05",
+          "F06",
+          "F08",
+          "F09",
+          "F10"
+        ]
+      }
+    },
+    "model_raw_response_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F01"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F02"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F03"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F04"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F05"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F06"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F07"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F08"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F09"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F10"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F11"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F12"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F13"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "facet_results": {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "facet_id": {
+                "const": "F14"
+              }
+            },
+            "required": [
+              "facet_id"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    }
+  ]
+}
