@@ -28,7 +28,23 @@ SOURCE_VALUES = {"synthetic", "synthetic_fixture", "approved_sample", "approved_
 
 
 def load(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8"))
+    """Strict JSON: reject duplicate keys and non-standard NaN/Infinity."""
+    def unique_pairs(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                raise ValueError(f"duplicate JSON field: {key}")
+            result[key] = value
+        return result
+
+    def reject_nonfinite(value):
+        raise ValueError(f"non-finite JSON constant: {value}")
+
+    return json.loads(
+        path.read_text(encoding="utf-8"),
+        object_pairs_hook=unique_pairs,
+        parse_constant=reject_nonfinite,
+    )
 
 
 def check_dictionary() -> list[str]:
@@ -94,20 +110,26 @@ def check_result(data: dict) -> list[str]:
         return ['tagging result must be a JSON object']
     try:
         dictionary = load(TAXONOMY)
+        normalized_schema = load(ROOT / "taxonomy" / "p0_tag_result.schema.json")
+        allowed_root_keys = set(normalized_schema["properties"])
+        allowed_facet_keys = set(normalized_schema["properties"]["facet_results"]["items"]["properties"])
         allowed_by_facet = {
             cat["id"]: {tag["tag_id"] for tag in cat["tags"]}
             for cat in dictionary["categories"]
         }
-    except (OSError, ValueError, KeyError) as exc:
+    except (OSError, ValueError, KeyError, TypeError) as exc:
         return [f"cannot load dictionary: {exc}"]
 
+    unexpected = set(data) - allowed_root_keys
+    if unexpected:
+        errors.append(f"undeclared result fields: {sorted(unexpected)}")
+    if data.get("schema_version") != "analyzer_tag_result_v0_1":
+        errors.append("schema_version is required and must be analyzer_tag_result_v0_1")
     for key in ("post_id", "media_id", "taxonomy_version", "model_id", "prompt_version"):
         if not isinstance(data.get(key), str) or not data[key].strip():
             errors.append(f"missing/invalid {key}")
     if data.get("taxonomy_version") != "1.1.0":
         errors.append("wrong taxonomy_version")
-    if data.get("schema_version") not in (None, "analyzer_tag_result_v0_1"):
-        errors.append("unsupported schema_version")
     if data.get("is_nail_design") is not True:
         errors.append("non-nail/unavailable input must use job-level result instead")
     if data.get("review_status") not in ("unreviewed", "approved", "corrected", "rejected"):
@@ -132,6 +154,9 @@ def check_result(data: dict) -> list[str]:
         if not isinstance(row, dict):
             errors.append(f"facet row {index} is not an object")
             continue
+        extra_facet_keys = set(row) - allowed_facet_keys
+        if extra_facet_keys:
+            errors.append(f"undeclared facet fields {index}: {sorted(extra_facet_keys)}")
         facet = row.get("facet_id")
         if not isinstance(facet, str) or facet not in ALL:
             errors.append(f"unknown facet {facet}")
@@ -168,16 +193,21 @@ def check_result(data: dict) -> list[str]:
             errors.append(f"confidence out of range {facet}")
         source = row.get("evidence_source")
         note = row.get("evidence_note")
+        scope = row.get("scope")
+        if source is not None and (not isinstance(source, str) or source not in EVIDENCE):
+            errors.append(f"invalid evidence_source {facet}")
+        if scope is not None and not isinstance(scope, str):
+            errors.append(f"invalid scope {facet}")
         if status == "observed" and (
-            source not in EVIDENCE or not isinstance(note, str) or not note.strip()
+            not isinstance(source, str) or source not in EVIDENCE or not isinstance(note, str) or not note.strip()
         ):
             errors.append(f"observed requires evidence source and explanation {facet}")
         if status == "unknown" and (not isinstance(note, str) or not note.strip()):
             errors.append(f"unknown requires abstention reason {facet}")
         if status == "not_applicable" and (not isinstance(note, str) or not note.strip()):
             errors.append(f"not_applicable requires a visible-scope reason {facet}")
-        if status == "not_evaluated" and (source is not None or confidence is not None or note not in (None, "")):
-            errors.append(f"not_evaluated cannot assert evidence/confidence {facet}")
+        if status == "not_evaluated" and (source is not None or confidence is not None or note is not None or scope is not None):
+            errors.append(f"not_evaluated cannot assert evidence/confidence/scope {facet}")
     if seen != ALL:
         errors.append(f"facet coverage mismatch: missing {sorted(ALL - seen)}")
     return errors
@@ -191,7 +221,7 @@ def main() -> int:
     if args.result:
         try:
             problems.extend(check_result(load(args.result)))
-        except (OSError, json.JSONDecodeError) as exc:
+        except (OSError, ValueError) as exc:
             problems.append(f"cannot load result: {exc}")
     if problems:
         for issue in problems:
