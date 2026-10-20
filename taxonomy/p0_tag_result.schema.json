@@ -179,9 +179,7 @@
                 "evidence_source": {
                   "enum": [
                     "image",
-                    "caption",
-                    "both",
-                    "human"
+                    "both"
                   ]
                 },
                 "evidence_note": {
@@ -797,6 +795,36 @@
                   "const": "not_evaluated"
                 }
               }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "not_applicable"
+                }
+              },
+              "required": [
+                "status"
+              ]
+            },
+            "then": {
+              "properties": {
+                "scope": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence_source": {
+                  "enum": [
+                    "image",
+                    "both"
+                  ]
+                }
+              },
+              "required": [
+                "scope",
+                "evidence_source"
+              ]
             }
           }
         ]
