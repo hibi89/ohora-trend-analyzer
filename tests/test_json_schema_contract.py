@@ -67,5 +67,27 @@ class TestJsonSchemaContract(unittest.TestCase):
         self.assert_invalid(lambda d: d["facet_results"].pop())
 
 
+    def test_reject_missing_required_schema_version(self):
+        self.assert_invalid(lambda d: d.pop("schema_version"))
+
+    def test_reject_undeclared_facet_property(self):
+        self.assert_invalid(lambda d: d["facet_results"][0].update(undeclared="value"))
+
+    def test_reject_not_evaluated_scope_claim(self):
+        self.assert_invalid(lambda d: d["facet_results"][1].update(scope="visible_nails"))
+
+    def test_reject_not_evaluated_blank_note(self):
+        self.assert_invalid(lambda d: d["facet_results"][1].update(evidence_note=""))
+
+    def test_reject_observed_untrusted_evidence_source(self):
+        self.assert_invalid(lambda d: d["facet_results"][0].update(
+            status="observed", tag_ids=["F01.pink"], evidence_source={"image": True},
+            evidence_note="synthetic"))
+
+    def test_reject_unknown_bad_scope_type(self):
+        self.assert_invalid(lambda d: d["facet_results"][0].update(scope=["nails"]))
+
+
+
 if __name__ == "__main__":
     unittest.main()
