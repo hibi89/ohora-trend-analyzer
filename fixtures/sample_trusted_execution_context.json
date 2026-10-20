@@ -1,0 +1,13 @@
+{
+  "post_id": "SYNTHETIC_POST_001",
+  "media_id": "SYNTHETIC_MEDIA_001",
+  "model_id": "synthetic-model-only",
+  "prompt_version": "p0-prompt-dry-run-1",
+  "analyzed_at": "2026-10-20T17:00:00+09:00",
+  "analysis_input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_provenance": {
+    "origin": "synthetic_fixture",
+    "note": "Synthetic test only. Not Meta/Instagram data"
+  },
+  "source_observation_id": "SYNTHETIC_OBSERVATION_001"
+}
