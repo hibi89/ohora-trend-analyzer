@@ -1,3 +1,5 @@
+> **코드 인계:** [7축 모델 응답 검사](../scripts/validate_model_output.py)와 [14축 정규화 함수](../scripts/normalize_p0_result.py)는 오프라인 파일로 구현됐다. 비네일은 `job_status=non_nail`로 분리한다. 실제 모델의 신뢰도/정확도, n8n 연동, DERIVED DB 저장은 미검증.
+
 # P0 이미지 태깅 모델 입력·출력 계약 — v1.1 (n8n 연동 준비용)
 
 작성 2026-10-20 | 상태: **프롬프트·출력 설계만 완료 / 실제 n8n·모델 호출 전**
