@@ -241,6 +241,9 @@
                 },
                 "evidence_note": {
                   "type": "null"
+                },
+                "scope": {
+                  "type": "null"
                 }
               }
             }
