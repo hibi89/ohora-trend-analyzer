@@ -1,5 +1,8 @@
 # AGENTS — OHORA Trend Analyzer
 
+> **2026-10-20 추가 품질 작업 지침:** v1.1 태깅 분석 연동 시 `scripts/validate_model_output.py` → `scripts/normalize_p0_result.py` → 최종 `scripts/validate_taxonomy.py` / `taxonomy/p0_tag_result.schema.json` 검증 계약을 유지한다. 모델에게 ID·국가·관측시각·model_id를 생성시키지 말고, 신뢰된 실행/수집 정보만 결합한다. 7축 모델 응답과 14축 저장용 응답을 혼동하지 않는다. 현재 순수 Python 정규화·검증만 오프라인 구현됐으며 **n8n 실행/DERIVED DB 저장·실 이미지 정확도 검증은 미구현**. [최신 QA](docs/TAGGING_QA_EXTENSION_2026-10-20.md)와 [HANDOFF](HANDOFF.md) 우선.
+
+
 > **2026-10-20 KST:** 설계가 먼저다. README/HANDOFF/STATUS/계약을 확인하지 않고 코드부터 작성하지 않는다.
 
 ## 1. 최상위 작업 목표
