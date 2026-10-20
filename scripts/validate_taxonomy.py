@@ -24,6 +24,7 @@ P0 = {"F01", "F03", "F05", "F06", "F08", "F09", "F10"}
 ALL = {f"F{i:02}" for i in range(1, 15)}
 STATUSES = {"observed", "unknown", "not_applicable", "not_evaluated"}
 EVIDENCE = {"image", "caption", "both", "human"}
+VISUAL_EVIDENCE = {"image", "both"}
 SOURCE_VALUES = {"synthetic", "synthetic_fixture", "approved_sample", "approved_readonly_export"}
 
 
@@ -199,13 +200,17 @@ def check_result(data: dict) -> list[str]:
         if scope is not None and not isinstance(scope, str):
             errors.append(f"invalid scope {facet}")
         if status == "observed" and (
-            not isinstance(source, str) or source not in EVIDENCE or not isinstance(note, str) or not note.strip()
+            not isinstance(source, str) or source not in VISUAL_EVIDENCE or not isinstance(note, str) or not note.strip()
         ):
-            errors.append(f"observed requires evidence source and explanation {facet}")
+            errors.append(f"observed requires image evidence and explanation {facet}")
         if status == "unknown" and (not isinstance(note, str) or not note.strip()):
             errors.append(f"unknown requires abstention reason {facet}")
-        if status == "not_applicable" and (not isinstance(note, str) or not note.strip()):
-            errors.append(f"not_applicable requires a visible-scope reason {facet}")
+        if status == "not_applicable" and (
+            not isinstance(note, str) or not note.strip()
+            or not isinstance(scope, str) or not scope.strip()
+            or not isinstance(source, str) or source not in VISUAL_EVIDENCE
+        ):
+            errors.append(f"not_applicable requires visible-scope reason and image evidence {facet}")
         if status == "not_evaluated" and (source is not None or confidence is not None or note is not None or scope is not None):
             errors.append(f"not_evaluated cannot assert evidence/confidence/scope {facet}")
     if seen != ALL:
