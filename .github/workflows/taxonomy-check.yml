@@ -35,5 +35,7 @@ jobs:
         run: python scripts/validate_taxonomy.py
       - name: Check strict seven-facet model JSON contract
         run: python -m scripts.validate_model_output --input fixtures/sample_p0_model_output.json
+      - name: End-to-end offline seven-to-fourteen smoke check
+        run: python -m scripts.smoke_p0_pipeline
       - name: Unit-test JSON output validator (synthetic only)
         run: python -m unittest discover -s tests -v
