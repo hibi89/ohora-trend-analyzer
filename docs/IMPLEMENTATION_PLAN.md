@@ -1,6 +1,8 @@
+> **2026-10-20 최신 알림:** 태깅 정본 v1.1 등록 완료. [STATUS](../STATUS.md)와 [QA](TAXONOMY_QA_2026-10-20.md)를 우선한다. 아래 단계별 일정은 *미구현 작업의 계획*이다.
+
 # OHORA Trend Analyzer — 2026-10-20~10-25 실행 설계도
 
-작성: 2026-10-20 KST | 상태: **설계안 / 구현 전** | 기준일: 2026-10-20 화요일
+작성: 2026-10-20 KST | 상태: **태깅 사전 D0 v1.1 등록 완료 / n8n·파생 DB·실AI 구현 전** | 기준일: 2026-10-20 화요일
 최종 기한: KDT 2차 11/03(화) 제출, 11/05(목) 발표
 
 ## 0. 한 문장 목표
@@ -31,7 +33,7 @@
 
 | 단계 | 날짜 | 산출물 | 통과 조건 | 차단/의존 |
 |---|---|---|---|---|
-| D0: 설계/태깅 | 10/20(화) | README, AGENTS, HANDOFF/STATUS, 세부 설계, 태그 draft, 용어 판정 규칙 | 14축·P0 7축·3상태+미실행 상태·RAW/DERIVED 경계 문서화 | 실 태그 159개 최종 내부 검수 없음 |
+| D0: 설계/태깅 | 10/20(화) | README, AGENTS, HANDOFF/STATUS, v1.1 스키마·84 P0 태그 규칙·QA | **정적 구조 검사 12/12 통과, 파일 GitHub 등록 완료** | Python CI·실이미지 분류 품질·오호라 내부 검수 미확인 |
 | D1: 데이터 입출력 계약 | 10/21(수) | synthetic/raw adapter, n8n input/output sample, DB schema 초안 | 합성 1건 읽고 media/post 연결·NULL 구분, RAW 변동 0 | P6 실데이터 export 위치/형식 미확인 |
 | D2: n8n 기본 작동 | 10/21~22 | export→image+caption→LLM→validation→writer workflow | 가상 미디어 1건이 정해진 7축 JSON으로 통과 | n8n 호스팅·네트워크·이미지 접근 확인 필요 |
 | D3: 안정화/저장 | 10/23(금) | DERIVED tables, idempotency, retry/errors, 재분석 규칙 | 재실행 중복 없음, 잘못된 태그 저장 금지, 실패 후 재개 | DB 종류 최종 선택·접근 승인 |
@@ -44,7 +46,7 @@
 
 ### D0 — 10/20
 1. 과거 설계 태그 스냅샷을 `taxonomy/tag_schema_v1_0_draft.json`에 **그대로** 보관(완료/정합성 확인).
-2. 모호 용어 및 적용 상태 규칙을 `docs/TAXONOMY_DECISIONS.md`에 제안, 검토 후 v1.1 동결 **별도**.
+2. **완료:** `taxonomy/tag_schema_v1_1.json`, `taxonomy/tag_rules_v1_1.json`, `docs/TAXONOMY_DECISIONS.md` 및 QA 보고 등록. 실제 이미지 분류 정확도는 미검증.
 3. `docs/ARCHITECTURE_AND_CONTRACTS.md`에서 P6 export 입력·DERIVED 출력·보안 계약 확정.
 4. P6 운영 준비와 Analyzer 개발을 분리; 실제 Meta 수집은 P6 승인·점검 항목으로 분류.
 
