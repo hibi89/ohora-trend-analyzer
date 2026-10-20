@@ -1,3 +1,5 @@
+> **n8n 2026-10-21 구현 참고:** 모델 출력은 불신 입력으로 취급해 [validator](../scripts/validate_taxonomy.py) 및 [normalized-result JSON Schema](../taxonomy/p0_tag_result.schema.json)를 통해 검증한 뒤 파생 DB에 저장한다. 기본 n8n JSON Schema 노드가 Draft 2020-12의 `contains`/`minContains`/`maxContains`를 지원하는지는 미검증. 미지원 시 별도 검증 서비스 사용. [구체 계약](TAGGING_INTEGRATION_HANDOFF_v1_1.md).
+
 > **2026-10-20 기준:** 태깅 사전과 판정 규칙 v1.1은 GitHub 등록 완료. [tag_schema_v1_1.json](../taxonomy/tag_schema_v1_1.json), [tag_rules_v1_1.json](../taxonomy/tag_rules_v1_1.json), [검증기](../scripts/validate_taxonomy.py) 및 [QA](TAXONOMY_QA_2026-10-20.md)를 우선한다. **실제 n8n workflow 파일은 아직 없음.**
 
 # n8n Workflow 설계 명세 — 2026-10-21~23 구현용
