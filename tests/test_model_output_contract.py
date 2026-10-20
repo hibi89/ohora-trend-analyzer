@@ -112,7 +112,7 @@ class TestModelOutputContract(unittest.TestCase):
         x = sample()
         row(x, "F10").update(
             status="not_applicable", scope="all visible nails in image",
-            evidence_note="All visible nails show no raised element",
+            evidence_source="image", evidence_note="All visible nails show no raised element",
         )
         self.assertEqual(validate_model_output(x), [])
 
@@ -142,6 +142,15 @@ class TestModelOutputContract(unittest.TestCase):
         x = sample()
         row(x, "F01")["product_sku"] = "fake"
         self.assertTrue(any("unexpected keys" in e for e in validate_model_output(x)))
+
+
+    def test_reject_caption_only_absence(self):
+        x = sample()
+        row(x, "F10").update(
+            status="not_applicable", scope="all visible nails",
+            evidence_source="caption", evidence_note="caption claims no ornament",
+        )
+        self.assertTrue(any("requires image evidence" in e for e in validate_model_output(x)))
 
 
 if __name__ == "__main__":
