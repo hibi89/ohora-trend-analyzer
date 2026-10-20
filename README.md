@@ -12,11 +12,14 @@
 4. [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md) — 10/20~10/25 작업 설계도, 단계별 DoD
 5. [docs/ARCHITECTURE_AND_CONTRACTS.md](docs/ARCHITECTURE_AND_CONTRACTS.md) — 수집기 연동, 데이터 경계, 분석 결과 계약
 6. [docs/TAXONOMY_DECISIONS.md](docs/TAXONOMY_DECISIONS.md) — 14축/159태그, P0 7축, 애매한 용어 판정 규칙
-7. [taxonomy/tag_schema_v1_0_draft.json](taxonomy/tag_schema_v1_0_draft.json) — **원본 제안 태그 사전 스냅샷**; 확정 v1.1 아님
+7. [taxonomy/tag_schema_v1_1.json](taxonomy/tag_schema_v1_1.json) — **현 프로젝트 태깅 기준 v1.1** (14축·159태그; 실제 AI 성능 미검증)
+8. [taxonomy/tag_rules_v1_1.json](taxonomy/tag_rules_v1_1.json) — P0 7축·84태그 판정 기준 및 혼동 규칙 10개
+9. [docs/TAXONOMY_RULEBOOK_v1_1.md](docs/TAXONOMY_RULEBOOK_v1_1.md) — 태깅 운영 기준서
+10. [scripts/validate_taxonomy.py](scripts/validate_taxonomy.py) — 사전·태깅 결과 오프라인 JSON 검사기
 
 ## 지금 하는 일
 
-- 10/20(화): 태깅 기준·아키텍처·안전한 연동 계약 확정
+- 10/20(화): 태깅 기준 v1.1·아키텍처·안전한 연동 계약 문서화. AI 정확도 미검증
 - 10/21(수)~10/23(금): **합성/복제 데이터부터** n8n → AI 7축 태깅 → 분석 전용 DB
 - 10/24(토): 분석용 내부 대시보드 최소판
 - 10/25(일): E2E 회귀 테스트·팀 인터페이스 인계
@@ -43,3 +46,13 @@
 토큰, `.env`, Meta 응답 전문, 사용자 실수집 CSV/SQLite, 개인 정보, 이미지 파일 원본을 커밋하지 않는다. 운영 접근은 별도 명시 승인 뒤 제한적으로 검증한다.
 
 **상태 해석:** 설계 문서 게시 ≠ n8n 구현 ≠ 운영 연동 성공 ≠ 실 Meta API 검증.
+
+## v1.1 사전·출력 규격 확인 (로컬/CI)
+
+```bash
+python scripts/validate_taxonomy.py
+python scripts/validate_taxonomy.py --result fixtures/sample_valid_tag_result.json
+python -m unittest discover -s tests -v
+```
+
+이 명령은 **외부 API·Meta·DB 연결 없이** 159개 ID 보존과 분류 결과 계약을 검사한다. 사용한 테스트 fixture는 가상 데이터이며 실물 이미지 판정 품질을 증명하지 않는다. [GitHub Actions workflow](.github/workflows/taxonomy-check.yml)는 등록했으나 CI 실행 완료 여부는 별도로 확인해야 한다.
