@@ -118,5 +118,34 @@ class TestTaggingContract(unittest.TestCase):
         self.assertTrue(any("invalid status" in e for e in check_result(x)))
 
 
+    def test_reject_non_object_result(self):
+        self.assertTrue(any("JSON object" in e for e in check_result(["not", "a", "dict"])))
+
+    def test_reject_array_facet_id_gracefully(self):
+        x = sample()
+        x["facet_results"][0]["facet_id"] = ["F01"]
+        self.assertTrue(any("unknown facet" in e for e in check_result(x)))
+
+    def test_reject_dict_status_gracefully(self):
+        x = sample()
+        row(x, "F01")["status"] = {"observed": True}
+        self.assertTrue(any("invalid status" in e for e in check_result(x)))
+
+    def test_reject_not_applicable_without_reason(self):
+        x = sample()
+        row(x, "F10").update(status="not_applicable", evidence_note=None)
+        self.assertTrue(any("visible-scope reason" in e for e in check_result(x)))
+
+    def test_accept_not_applicable_with_reason(self):
+        x = sample()
+        row(x, "F10").update(status="not_applicable", evidence_note="Entire synthetic nail area visible; no raised decoration")
+        self.assertEqual(check_result(x), [])
+
+    def test_reject_not_evaluated_with_claim(self):
+        x = sample()
+        row(x, "F13")["evidence_note"] = "glamorous despite being unevaluated"
+        self.assertTrue(any("cannot assert" in e for e in check_result(x)))
+
+
 if __name__ == "__main__":
     unittest.main()
