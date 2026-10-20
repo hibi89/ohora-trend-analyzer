@@ -1,0 +1,34 @@
+name: Taxonomy v1.1 offline contract checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'taxonomy/**'
+      - 'scripts/validate_taxonomy.py'
+      - 'tests/**'
+      - '.github/workflows/taxonomy-check.yml'
+  pull_request:
+    paths:
+      - 'taxonomy/**'
+      - 'scripts/validate_taxonomy.py'
+      - 'tests/**'
+      - '.github/workflows/taxonomy-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  taxonomy-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check original 159-tag taxonomy and 84 P0 rules
+        run: python scripts/validate_taxonomy.py
+      - name: Unit-test JSON output validator (synthetic only)
+        run: python -m unittest discover -s tests -v
