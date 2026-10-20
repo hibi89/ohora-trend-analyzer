@@ -116,5 +116,12 @@ class TestNormalizeP0(unittest.TestCase):
                          normalize_p0_output(model_sample(), trusted()))
 
 
+    def test_reject_malformed_trusted_observation_id(self):
+        metadata = trusted()
+        metadata["source_observation_id"] = ["SYNTHETIC_OBS"]
+        with self.assertRaisesRegex(ValueError, "source_observation_id"):
+            normalize_p0_output(model_sample(), metadata)
+
+
 if __name__ == "__main__":
     unittest.main()
