@@ -1,3 +1,5 @@
+> **2026-10-20 최신 연동 단계:** [소형 모델 응답 검사](../scripts/validate_model_output.py) → [신뢰된 14축 정규화](../scripts/normalize_p0_result.py) → [Python+JSON Schema 검사](../scripts/validate_taxonomy.py) → **미구현 DERIVED writer**. `observed/not_applicable`는 이미지 근거 필수. [97개 등록 테스트/CI 확인 안내](TAGGING_SMOKE_RUNBOOK_2026-10-20.md)를 우선. 아래 '85개 통과'는 이전 버전의 로컬 합성 테스트 기록이며 최신 실행 수치가 아니다.
+
 > **2026-10-20 추가 설계·코드:** 모델의 최소 7축 JSON → [7축 입력 검증기](../scripts/validate_model_output.py) → [신뢰된 메타데이터 결합 및 14축 정규화기](../scripts/normalize_p0_result.py) → [정규화 JSON Schema](../taxonomy/p0_tag_result.schema.json) → DERIVED DB **(저장 단계 미구현)**. [모델 프롬프트 계약](P0_VISION_PROMPT_CONTRACT_v1_1.md) 참조. 현재 로컬 동등 코드 합성 회귀 **85/85 PASS**, GitHub Actions 원격 CI 미확인.
 
 # 태깅 v1.1 개발자·프론트엔드 인계 계약
