@@ -18,6 +18,10 @@
 10. [scripts/validate_taxonomy.py](scripts/validate_taxonomy.py) — 사전·태깅 결과 오프라인 JSON 검사기
 11. [taxonomy/p0_tag_result.schema.json](taxonomy/p0_tag_result.schema.json) — 검증·DB 저장 전 **정규화 결과 JSON Schema**
 12. [docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md](docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md) — n8n·프론트엔드 인계 계약
+13. [docs/P0_VISION_PROMPT_CONTRACT_v1_1.md](docs/P0_VISION_PROMPT_CONTRACT_v1_1.md) — AI 모델에 줄 7축 입력·출력 프롬프트(설계)
+14. [scripts/validate_model_output.py](scripts/validate_model_output.py) — AI 7축 모델 응답 사전 검사
+15. [scripts/normalize_p0_result.py](scripts/normalize_p0_result.py) — 신뢰된 소스 정보와 7축 결과를 14축 DERIVED 형식으로 변환(오프라인)
+16. [docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md](docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md) — 승인된 사진 30~50장 수동 평가 절차
 
 ## 지금 하는 일
 
@@ -54,6 +58,7 @@
 ```bash
 python scripts/validate_taxonomy.py
 python scripts/validate_taxonomy.py --result fixtures/sample_valid_tag_result.json
+python -m scripts.validate_model_output --input fixtures/sample_p0_model_output.json
 python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 ```
