@@ -1,3 +1,5 @@
+> **추가 확인(2026-10-20):** 실제 DERIVED 저장 직전 정규화 결과의 전체 계약은 [P0 JSON Schema](../taxonomy/p0_tag_result.schema.json)를 참조. `source_media_key`는 보조 필드이며 `media_id`가 없는 실수집 입력은 차후 읽기 전용 어댑터에서 확인·검증하기 전까지 성공 분석으로 처리하지 않는다. 이 JSON Schema는 **모델에 바로 제공하는 축소 Structured Output 스키마가 아니다**.
+
 > **2026-10-20 변경 참고:** 태깅 정본은 [v1.1 사전](../taxonomy/tag_schema_v1_1.json), [84개 판정 규칙](../taxonomy/tag_rules_v1_1.json). 아래 설명용 JSON은 개략 필드 구조를 보여주는 **부분 예시**로서 P0 계약의 14개 facet 전부를 포함하지 않으므로 validator 입력으로 사용하면 안 된다. 완전한 검증용 JSON은 [합성 fixture](../fixtures/sample_valid_tag_result.json)를 사용할 것.
 
 # 아키텍처 및 RAW↔DERIVED 데이터 계약 v0.1
