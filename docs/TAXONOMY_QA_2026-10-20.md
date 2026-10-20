@@ -1,4 +1,4 @@
-# 2026-10-20 — 태깅 사전 v1.1 정적 검증 보고서
+> **2026-10-20 최종 점검 추가 (최신 정보):** v1.1 사전·84개 판정 규칙·[정규화 JSON Schema](../taxonomy/p0_tag_result.schema.json)·22개 기존 검사(기본 16+잘못된 JSON 자료형/상태 근거 6)·JSON Schema 테스트 14개, 총 **36개 합성 테스트의 로컬 동등코드 실행 PASS**. GitHub Actions 실행 로그/완료 상태는 **미확인**. 원본/미디어 실데이터·Meta·n8n·운영 DB 접근은 없음. 세부 [통합 인수인계](TAGGING_INTEGRATION_HANDOFF_v1_1.md).\n\n# 2026-10-20 — 태깅 사전 v1.1 정적 검증 보고서
 
 > **범위:** 팀 프로젝트용 태깅표/검증 계약. 실 이미지 AI 판정·n8n/Meta/API/DB 운영 검증 아님.
 
@@ -51,3 +51,13 @@ python -m unittest discover -s tests -v
 ## 인계 주의
 
 **데이터 사전 기준 v1.1 등록 완료 ≠ 분석 엔진 완성 ≠ 오호라 실무 검증.** 태그 사전 JSON은 나중에 버전업 가능하고, Meta RAW는 P6의 별도 저장소에서 변경하지 않는다.
+
+## 2026-10-20 추가 검증 상세 (이번 작업)
+
+- 로컬 별도 작업 디렉터리에서 GitHub 태깅 검사 함수 및 합성 테스트를 대응 구현해 재현: `python -m unittest discover -s tests -v` → **36/36 PASS** (22개 결과 검증 + 14개 JSON Schema 규격 검사). 같은 local fixture/스키마로 `python scripts/validate_taxonomy.py` 및 `--result fixtures/sample_valid_tag_result.json` PASS.
+- 실제 GitHub 저장소를 로컬에서 클론해 검사한 결과는 아니다(네트워크 DNS 제한). 등록된 최신 소스 17파일 GitHub fetch-back 및 JSON 구조 검사로 정합성 검토.
+- GitHub 파일 기준 재확인: F01~F14 정확히 14축, 159개 태그 ID 전수 불변/유일, P0 7축·84개 규칙, 14축 결과 계약, 36개 테스트 함수, 14개 JSON Schema 중복방지 조건, 원본 v1.0 보존.
+- 잘못된 `facet_id`/`status` 자료형의 예외 중단 방지, `not_applicable`의 부재 판단 이유 필수, `not_evaluated` 근거 주장 차단.
+- 팀원용 XLSX 최종본은 7개 시트(기존 5개 + S01~S04 구조 4개 + 오호라 공개몰 분류 대응표)로 갱신해 사용자 채팅 첨부로 제공. **XLSX 파일 자체는 GitHub에 미등록**; 개발 표준 정본은 JSON과 기준서.
+- P0 JSON Schema는 **정규화 결과 검증용**으로서 n8n의 모든 Structured Output 구현에서 그대로 동작한다는 보장은 없다. 내일 실제 n8n 환경과 검증 어댑터를 확인해야 한다.
+- 이미지 태깅 품질, 294계정 실수집, DERIVED DB 실저장, 유료 외부 AI 실행 및 Github Actions CI PASS는 **여전히 미검증**.
