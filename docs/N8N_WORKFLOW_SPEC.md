@@ -1,3 +1,5 @@
+> **2026-10-20 구현 연계 메모:** 모델에는 [간결한 P0 7축 계약](P0_VISION_PROMPT_CONTRACT_v1_1.md)만 요청하고, `scripts/validate_model_output.py`로 검수한 뒤 `scripts/normalize_p0_result.py`에서 **신뢰된** post/media/source/model 정보를 결합한다. 이후 저장 직전에 Python 검사 및 `taxonomy/p0_tag_result.schema.json` 검사. 이 순서는 **오프라인 Python 코드와 합성 테스트까지** 구현되었을 뿐 실제 n8n 노드/DB 저장은 아직 미구현이다.
+
 > **n8n 2026-10-21 구현 참고:** 모델 출력은 불신 입력으로 취급해 [validator](../scripts/validate_taxonomy.py) 및 [normalized-result JSON Schema](../taxonomy/p0_tag_result.schema.json)를 통해 검증한 뒤 파생 DB에 저장한다. 기본 n8n JSON Schema 노드가 Draft 2020-12의 `contains`/`minContains`/`maxContains`를 지원하는지는 미검증. 미지원 시 별도 검증 서비스 사용. [구체 계약](TAGGING_INTEGRATION_HANDOFF_v1_1.md).
 
 > **2026-10-20 기준:** 태깅 사전과 판정 규칙 v1.1은 GitHub 등록 완료. [tag_schema_v1_1.json](../taxonomy/tag_schema_v1_1.json), [tag_rules_v1_1.json](../taxonomy/tag_rules_v1_1.json), [검증기](../scripts/validate_taxonomy.py) 및 [QA](TAXONOMY_QA_2026-10-20.md)를 우선한다. **실제 n8n workflow 파일은 아직 없음.**
