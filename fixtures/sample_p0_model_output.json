@@ -1,0 +1,65 @@
+{
+  "is_nail_design": true,
+  "facets": [
+    {
+      "facet_id": "F01",
+      "status": "observed",
+      "tag_ids": [
+        "F01.pink"
+      ],
+      "evidence_source": "image",
+      "evidence_note": "가상 사례: 손톱에 핑크색 영역이 보인다는 가정",
+      "scope": "synthetic_visible_nail_only"
+    },
+    {
+      "facet_id": "F03",
+      "status": "unknown",
+      "tag_ids": [],
+      "evidence_source": null,
+      "evidence_note": "가상 사례: 해당 특징의 시각 근거 없음",
+      "scope": "synthetic_visible_nail_only"
+    },
+    {
+      "facet_id": "F05",
+      "status": "unknown",
+      "tag_ids": [],
+      "evidence_source": null,
+      "evidence_note": "가상 사례: 해당 특징의 시각 근거 없음",
+      "scope": "synthetic_visible_nail_only"
+    },
+    {
+      "facet_id": "F06",
+      "status": "observed",
+      "tag_ids": [
+        "F06.french"
+      ],
+      "evidence_source": "image",
+      "evidence_note": "가상 사례: 손톱 끝에 프렌치 대비가 보인다는 가정",
+      "scope": "synthetic_visible_nail_only"
+    },
+    {
+      "facet_id": "F08",
+      "status": "unknown",
+      "tag_ids": [],
+      "evidence_source": null,
+      "evidence_note": "가상 사례: 해당 특징의 시각 근거 없음",
+      "scope": "synthetic_visible_nail_only"
+    },
+    {
+      "facet_id": "F09",
+      "status": "unknown",
+      "tag_ids": [],
+      "evidence_source": null,
+      "evidence_note": "가상 사례: 해당 특징의 시각 근거 없음",
+      "scope": "synthetic_visible_nail_only"
+    },
+    {
+      "facet_id": "F10",
+      "status": "unknown",
+      "tag_ids": [],
+      "evidence_source": null,
+      "evidence_note": "가상 사례: 해당 특징의 시각 근거 없음",
+      "scope": "synthetic_visible_nail_only"
+    }
+  ]
+}
