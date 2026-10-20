@@ -140,7 +140,7 @@ class TestTaggingContract(unittest.TestCase):
 
     def test_accept_not_applicable_with_reason(self):
         x = sample()
-        row(x, "F10").update(status="not_applicable", evidence_note="Entire synthetic nail area visible; no raised decoration")
+        row(x, "F10").update(status="not_applicable", evidence_source="image", scope="all visible nails", evidence_note="Entire synthetic nail area visible; no raised decoration")
         self.assertEqual(check_result(x), [])
 
     def test_reject_not_evaluated_with_claim(self):
@@ -204,6 +204,25 @@ class TestTaggingContract(unittest.TestCase):
             path = Path(tmp) / "valid.json"
             path.write_text('{"count":0,"tags":[]}', encoding="utf-8")
             self.assertEqual(load(path), {"count": 0, "tags": []})
+
+
+    def test_reject_caption_only_observed_tag(self):
+        x = sample()
+        row(x, "F01").update(status="observed", tag_ids=["F01.pink"],
+                              evidence_source="caption", evidence_note="caption says pink")
+        self.assertTrue(any("image evidence" in e for e in check_result(x)))
+
+    def test_reject_absence_without_visible_scope(self):
+        x = sample()
+        row(x, "F10").update(status="not_applicable", evidence_source="image",
+                              evidence_note="No visible raised objects", scope=None)
+        self.assertTrue(any("visible-scope" in e for e in check_result(x)))
+
+    def test_reject_caption_only_absence(self):
+        x = sample()
+        row(x, "F10").update(status="not_applicable", evidence_source="caption",
+                              evidence_note="caption says no ornaments", scope="all visible nails")
+        self.assertTrue(any("image evidence" in e for e in check_result(x)))
 
 
 if __name__ == "__main__":
