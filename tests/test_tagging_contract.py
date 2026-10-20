@@ -1,8 +1,10 @@
 """Synthetic unit tests only: no Meta, no VLM, no database."""
 import copy
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
-from scripts.validate_taxonomy import ALL, P0, check_dictionary, check_result
+from scripts.validate_taxonomy import ALL, P0, check_dictionary, check_result, load
 
 
 def sample():
@@ -145,6 +147,63 @@ class TestTaggingContract(unittest.TestCase):
         x = sample()
         row(x, "F13")["evidence_note"] = "glamorous despite being unevaluated"
         self.assertTrue(any("cannot assert" in e for e in check_result(x)))
+
+
+    def test_reject_missing_schema_version(self):
+        x = sample()
+        x.pop("schema_version")
+        self.assertTrue(any("schema_version" in e for e in check_result(x)))
+
+    def test_reject_extra_root_field(self):
+        x = sample()
+        x["unexpected_model_note"] = "untrusted"
+        self.assertTrue(any("undeclared result fields" in e for e in check_result(x)))
+
+    def test_reject_extra_facet_field(self):
+        x = sample()
+        row(x, "F01")["wrong_extra_field"] = "value"
+        self.assertTrue(any("undeclared facet fields" in e for e in check_result(x)))
+
+    def test_reject_not_evaluated_empty_string_evidence_note(self):
+        x = sample()
+        row(x, "F13")["evidence_note"] = ""
+        self.assertTrue(any("not_evaluated cannot" in e for e in check_result(x)))
+
+    def test_reject_not_evaluated_nonempty_scope(self):
+        x = sample()
+        row(x, "F13")["scope"] = "visible_nails"
+        self.assertTrue(any("not_evaluated cannot" in e for e in check_result(x)))
+
+    def test_reject_unhashable_evidence_source_without_crash(self):
+        x = sample()
+        row(x, "F01").update(status="observed", tag_ids=["F01.pink"],
+                             evidence_source={"image": True}, evidence_note="synthetic")
+        self.assertTrue(any("invalid evidence_source" in e for e in check_result(x)))
+
+    def test_reject_unknown_nonstring_scope(self):
+        x = sample()
+        row(x, "F01")["scope"] = ["visible_nails"]
+        self.assertTrue(any("invalid scope" in e for e in check_result(x)))
+
+    def test_reject_duplicate_json_keys(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "duplicate.json"
+            path.write_text('{"post_id":"one","post_id":"two"}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "duplicate JSON field"):
+                load(path)
+
+    def test_reject_nonstandard_nan_json(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "bad.json"
+            path.write_text('{"confidence":NaN}', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "non-finite JSON constant"):
+                load(path)
+
+    def test_strict_json_loader_accepts_valid_input(self):
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "valid.json"
+            path.write_text('{"count":0,"tags":[]}', encoding="utf-8")
+            self.assertEqual(load(path), {"count": 0, "tags": []})
 
 
 if __name__ == "__main__":
