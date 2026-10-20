@@ -1,3 +1,5 @@
+> **2026-10-20 추가 설계·코드:** 모델의 최소 7축 JSON → [7축 입력 검증기](../scripts/validate_model_output.py) → [신뢰된 메타데이터 결합 및 14축 정규화기](../scripts/normalize_p0_result.py) → [정규화 JSON Schema](../taxonomy/p0_tag_result.schema.json) → DERIVED DB **(저장 단계 미구현)**. [모델 프롬프트 계약](P0_VISION_PROMPT_CONTRACT_v1_1.md) 참조. 현재 로컬 동등 코드 합성 회귀 **85/85 PASS**, GitHub Actions 원격 CI 미확인.
+
 # 태깅 v1.1 개발자·프론트엔드 인계 계약
 
 기준: 2026-10-20 KST. 상태: **데이터 사전/정규화 출력 계약 검증 완료, 실 AI 이미지 태깅 및 n8n/DB 연동은 미구현**.
