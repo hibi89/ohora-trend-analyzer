@@ -1,8 +1,10 @@
 # STATUS — OHORA Trend Analyzer
 
+> **2026-10-20 추가 작업 최신 상태 — 태깅 v1.1 품질 보강 완료 (이 문단 최우선):** 기존 14축·159태그·84개 P0 기준은 불변. 모델 응답 7축 JSON 검사기 `scripts/validate_model_output.py`, 신뢰된 메타데이터 기반 14축 정규화기 `scripts/normalize_p0_result.py`, [AI 프롬프트 계약](docs/P0_VISION_PROMPT_CONTRACT_v1_1.md), [이미지 검수 프로토콜](docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md), [추가 QA 보고](docs/TAGGING_QA_EXTENSION_2026-10-20.md) 등록. **로컬 동등 구현 합성 85/85 PASS / 연결 GitHub Actions 원격 CI는 미확인.** n8n·실 AI 호출·DERIVED DB·P6 RAW 접근은 미실행. 내일 가장 먼저 연결된 GitHub 원격 CI 확인 후 n8n 합성 1건 시작.
+
 > **최신 검증 문서:** [TAXONOMY_QA_2026-10-20.md](docs/TAXONOMY_QA_2026-10-20.md), [P0 정규화 JSON Schema](taxonomy/p0_tag_result.schema.json), [n8n 인계](docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md). XLSX는 7개 시트 사용자 채팅 첨부이며 GitHub 정본은 JSON.
 >
-> **2026-10-20 KST — 태깅표 v1.1 완료: JSON Schema 및 36개 로컬 합성 검사 PASS (현재 우선)**
+> **2026-10-20 KST — 기본 태깅표 v1.1 완료 (추가 작업 최신 보고를 우선)**
 >
 > **오늘의 범위: 태깅표·정적 검사·JSON Schema·문서 인수인계. 실제 n8n·AI 이미지 태깅·DERIVED DB·내부 대시보드는 내일 이후.**
 >
@@ -25,7 +27,7 @@
 | **P0 7축(84태그) 판정 기준** | **완료** | `taxonomy/tag_rules_v1_1.json`: 모호 용어 경계 규칙 10개 |
 | **태깅 JSON 데이터 구조 정적 검사** | **통과** | 기존 159개 ID·명칭 보존 등 GitHub fetch 기반 12개 구조 검사 PASS |
 | **태깅 결과 검증 코드** | **등록 완료 / 실행 증거 미확인** | `scripts/validate_taxonomy.py` + `tests/test_tagging_contract.py` 22개 + `tests/test_json_schema_contract.py` 14개, 합계 36개 합성 테스트 |
-| **GitHub Actions CI 검사** | **workflow 및 test dependency 등록 / GitHub CI 결과 미확인** | `.github/workflows/taxonomy-check.yml`, `requirements-test.txt`; 로컬 대응코드 36/36 PASS와 구별 |
+| **GitHub Actions CI 검사** | **workflow 및 test dependency 등록 / GitHub CI 결과 미확인** | `.github/workflows/taxonomy-check.yml`, `requirements-test.txt`; 로컬 대응코드 85/85 PASS와 구별 |
 | 태깅 사전 설명서·QA | **완료** | `docs/TAXONOMY_RULEBOOK_v1_1.md` + `docs/TAXONOMY_QA_2026-10-20.md` |
 | P6↔Analyzer 읽기 전용 실제 export 연결 | **미구현/미검증** | P6 운영 DB 소유권 침범 금지 |
 | n8n 실제 workflow import/실행 | **미구현** | 10/21 시작 목표 |
@@ -47,7 +49,7 @@
 
 ## 오늘 실시한 검증 / 한계
 
-- 로컬 사전 `verify_tagging_v1_1.py` 구조 검사 PASS, 대응 검증기 22개+JSON Schema 14개 **로컬 합성 검사 36/36 PASS**. GitHub 최신 파일을 다시 읽어 17개 파일 존재 및 14축/159 ID/84 규칙/36 테스트 함수 확인.
+- 로컬 사전 `verify_tagging_v1_1.py` 구조 검사 PASS, 대응 검증기 22개+JSON Schema 14개 **로컬 합성 검사 36/36 PASS**. GitHub 최신 파일을 다시 읽어 17개 파일 존재 및 14축/159 ID/84 규칙/85 테스트 함수 확인.
 - 로컬 별도 작업공간의 GitHub 대응 검증 코드 + JSON Schema 회귀 **36/36 PASS**. GitHub Actions에서 실제 해당 커밋의 **CI 실행 완료/성공 증거는 아직 없음**. 임의 PASS 주장 금지.
 - 컨테이너의 `git clone`은 `Could not resolve host: github.com` 실패. 같은 네트워크 방식 반복 금지; GitHub Actions 또는 사용자의 로컬 환경에서 검증.
 - 타인의 GitHub 파일·실제 사진·오호라 내부 분류에 대한 확인 없이 공식 표준으로 주장하지 않는다.
@@ -67,3 +69,17 @@
 ## 다음 갱신 규칙
 
 작업마다 변경 파일, 커밋 SHA, 실행 명령, 실제 PASS 증거, 위험과 롤백, 다음 최소 작업을 `HANDOFF.md`와 `STATUS.md`에 같은 작업 세션으로 남기고 GitHub fetch-back 검증할 것. **태깅 기준 등록과 모델 구현 완료를 혼동하지 말 것**.
+
+
+## 2026-10-20 추가 작업 반영 (모델 JSON → 정규화 데이터 계약)
+
+| 항목 | 상태 | 구현/검증 경계 |
+|---|---|---|
+| 잘못된 JSON 자료형/중복 키/NaN 차단 | **코드 반영** | `scripts/validate_taxonomy.py` strict parser |
+| 모델이 생성하는 P0 7축 JSON 검사 | **코드 반영** | `scripts/validate_model_output.py` |
+| 신뢰된 ID·model/prompt/version/시각 결합 및 14축 생성 | **코드 반영** | `scripts/normalize_p0_result.py`; DB writer 미구현 |
+| 합성 테스트 | **로컬 동등 구현 85/85 PASS** | Python 검사 32, JSON Schema 20, 모델 출력 20, 정규화 13 |
+| 실제 모델 이미지 분류·n8n·저장 | **미구현/미검증** | 내일부터 외부 권한·비용 확인 후 연결 |
+| 실무 수동 이미지 QA | **문서/빈 CSV만 작성** | 실제 허가 이미지 30~50장 검수 미실시 |
+
+**완료율 해석:** 오늘의 '태깅 설계·검증' 작업은 마쳤지만, 실제 이미지 태깅 시스템 완성이나 정확도 검증을 의미하지 않는다.
