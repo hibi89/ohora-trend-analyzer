@@ -48,7 +48,7 @@ class TestJsonSchemaContract(unittest.TestCase):
     def test_accept_not_applicable_with_reason(self):
         data = deepcopy(SAMPLE)
         data["facet_results"][0].update(
-            status="not_applicable", evidence_note="Synthetic full visible nail area is colorless")
+            status="not_applicable", evidence_source="image", scope="whole nail visible", evidence_note="Synthetic full visible nail area is colorless")
         self.assertEqual(list(VALIDATOR.iter_errors(data)), [])
 
     def test_reject_no_visual_input_as_success(self):
@@ -87,6 +87,22 @@ class TestJsonSchemaContract(unittest.TestCase):
     def test_reject_unknown_bad_scope_type(self):
         self.assert_invalid(lambda d: d["facet_results"][0].update(scope=["nails"]))
 
+
+
+    def test_reject_caption_only_observed_tag(self):
+        self.assert_invalid(lambda d: d["facet_results"][0].update(
+            status="observed", tag_ids=["F01.pink"], evidence_source="caption",
+            evidence_note="caption claims color"))
+
+    def test_reject_missing_visible_scope_for_absence(self):
+        self.assert_invalid(lambda d: d["facet_results"][9].update(
+            status="not_applicable", evidence_source="image",
+            evidence_note="Entire visible nail area has no ornament", scope=None))
+
+    def test_reject_caption_only_absence(self):
+        self.assert_invalid(lambda d: d["facet_results"][9].update(
+            status="not_applicable", evidence_source="caption",
+            evidence_note="caption claims no ornament", scope="whole nail visible"))
 
 
 if __name__ == "__main__":
