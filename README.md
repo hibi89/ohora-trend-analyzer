@@ -16,6 +16,8 @@
 8. [taxonomy/tag_rules_v1_1.json](taxonomy/tag_rules_v1_1.json) — P0 7축·84태그 판정 기준 및 혼동 규칙 10개
 9. [docs/TAXONOMY_RULEBOOK_v1_1.md](docs/TAXONOMY_RULEBOOK_v1_1.md) — 태깅 운영 기준서
 10. [scripts/validate_taxonomy.py](scripts/validate_taxonomy.py) — 사전·태깅 결과 오프라인 JSON 검사기
+11. [taxonomy/p0_tag_result.schema.json](taxonomy/p0_tag_result.schema.json) — 검증·DB 저장 전 **정규화 결과 JSON Schema**
+12. [docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md](docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md) — n8n·프론트엔드 인계 계약
 
 ## 지금 하는 일
 
@@ -52,6 +54,7 @@
 ```bash
 python scripts/validate_taxonomy.py
 python scripts/validate_taxonomy.py --result fixtures/sample_valid_tag_result.json
+python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 ```
 
