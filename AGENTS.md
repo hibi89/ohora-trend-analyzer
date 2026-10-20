@@ -20,10 +20,10 @@
 
 ## 3. 분류/분석 계약
 
-- 사전 스냅샷: `taxonomy/tag_schema_v1_0_draft.json`(14축, 159태그, S01~S04). **제안 v1.0-draft**이며 v1.1 미확정. 오호라의 공식 내부 표준 아님.
+- 기준 사전: `taxonomy/tag_schema_v1_1.json`(14축, 159태그, S01~S04) + `taxonomy/tag_rules_v1_1.json`(P0 84개 판정 기준). 기존 v1.0-draft는 원본 보존. **팀 프로젝트 표준 v1.1이며 오호라 공식 내부 표준은 아님.**
 - Astra 피드백: F01/F03/F05/F06/F08/F09/F10 **P0 7축**만 우선; 시어/시럽/젤리, 그라데이션/옴브레, 크롬/미러 경계 규칙; F02/F13/F14 등은 충분한 근거 없으면 unknown. `docs/TAXONOMY_DECISIONS.md` 참고.
 - 값은 표시명 대신 불변 tag_id로 저장. 모델 출력은 사전 존재 여부·축 적합성·상태 조합으로 검증.
-- `observed`/`unknown`/`not_applicable`/`not_evaluated`(기존 draft `not_observed` 대응은 문서화 후 이행): **미실행과 판단불가를 구별**. 동결 전 상태명 변경 시 변환 규칙과 테스트 필수.
+- `observed`/`unknown`/`not_applicable`/`not_evaluated`: **미실행과 판단불가를 구별**. 기존 draft의 `not_observed`는 의미가 모호하므로 자동 변환 금지. 결과는 `scripts/validate_taxonomy.py`의 계약 검사 통과 후만 저장.
 - 분류할 수 없으면 빈 태그+정확한 상태; 사진에 보이지 않는 재료/공정/브랜드/오호라 상품을 상상하지 않는다.
 - RAW는 원본 기록, DERIVED는 버전 있는 재실행 가능한 해석. 재분석 때 과거 결과 덮어쓰기 금지.
 - 모델 self-reported confidence는 실제 정확도 확률이 아니다.
@@ -50,4 +50,4 @@
 
 ## 6. 현재 우선순위
 
-`docs/IMPLEMENTATION_PLAN.md`의 마일스톤 D0 → D1 → D2 → D3 → D4 → D5 순서로 진행. 사용자 승인 없는 운영 접속은 미완료 항목으로 남긴다.
+`docs/IMPLEMENTATION_PLAN.md`의 D0 태깅 기준 v1.1 발행 이후, D1 오프라인 fixture/연동 검증 → D2 n8n → D3 DERIVED DB → D4 내부 UI → D5 통합 검수 순서로 진행. 코드 파일 등록과 실제 실행/AI 정확도 검증은 구분한다. 사용자 승인 없는 운영 접속은 미완료 항목으로 남긴다.
