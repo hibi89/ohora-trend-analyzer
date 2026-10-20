@@ -1,10 +1,12 @@
 # HANDOFF — OHORA Trend Analyzer
 
-> **오늘 잔여 작업 종료(2026-10-20):** 태깅표 작업만 마무리. 기존 14축/159 IDs 보존, 7축/84 규칙, normalized JSON Schema, 엣지케이스 강화, 사용자용 Excel 7개 시트, 로컬 동등구현 합성 회귀 36/36 PASS. GitHub 등록 파일·인계 문서 최신화. **실 AI 이미지 분석·n8n·운영 DB 연결은 내일 이후**, CI 원격 PASS 별도 확인 필요.
+> **2026-10-20 KST — 오늘 추가 QA 작업 최종 인수인계 (이 문단 최우선):** 기존 태깅 v1.1 **14축·159태그 / P0 7축·84개 코드 불변**. 기존 36개 합성 검증을 모델 응답 검사기·JSON Schema·신뢰된 데이터 기반 정규화 코드까지 확장했다. 로컬 대응 구현 **85/85 synthetic PASS**, GitHub Actions 원격 PASS는 **미확인**. 추가 구현: `scripts/validate_model_output.py`(7축 AI 결과), `scripts/normalize_p0_result.py`(7→14축 신뢰정보 결합), `fixtures/sample_p0_model_output.json`, `tests/test_model_output_contract.py`, `tests/test_normalize_p0_result.py`, 엄격 JSON parser/결과 검증 개선. 문서: [프롬프트 계약](docs/P0_VISION_PROMPT_CONTRACT_v1_1.md), [수동 사진 QA](docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md), [추가 회귀 보고](docs/TAGGING_QA_EXTENSION_2026-10-20.md). **n8n workflow·실 VLM 호출·DERIVED 저장·실 P6 연동은 아직 0건**. 다음 채팅방은 이 문단→[STATUS.md](STATUS.md)→실 파일 순서로 확인한 뒤, 원격 CI 및 n8n 환경 확인부터 시작할 것.
+
+> **오늘 잔여 작업 종료(2026-10-20):** 태깅표 작업만 마무리. 기존 14축/159 IDs 보존, 7축/84 규칙, normalized JSON Schema, 엣지케이스 강화, 사용자용 Excel 7개 시트, 로컬 동등구현 합성 회귀 85/85 PASS(추가 작업 최신판). GitHub 등록 파일·인계 문서 최신화. **실 AI 이미지 분석·n8n·운영 DB 연결은 내일 이후**, CI 원격 PASS 별도 확인 필요.
 >
-> **최신 인수인계: 2026-10-20 KST / 태깅표 v1.1 · 표준 출력 JSON Schema · 로컬 합성 테스트 36/36 PASS. 이 문서를 우선한다.**
+> **최신 인수인계: 2026-10-20 KST / 태깅표 v1.1 · 표준 출력 JSON Schema · 로컬 합성 테스트 85/85 PASS(추가 작업 최신판). 이 문서를 우선한다.**
 >
-> GitHub `hibi89/ohora-trend-analyzer`, `main` 기준. **태깅 사전 14축·159태그 / P0 7축·84태그 판정 규칙 / 혼동 사례 10개 / 4상태 계약 / JSON Schema / 합성 검증기·36개 테스트**까지 GitHub 등록 완료. **n8n 실제 workflow, 외부 AI 태깅 실행, DERIVED DB, 내부 관리 대시보드는 미구현.** 10/21부터 n8n 시작, 오늘은 더 이상 n8n 변경하지 않는다. **P6 RAW 수집기/실 Meta 호출/운영 DB에는 변경 없음.**
+> GitHub `hibi89/ohora-trend-analyzer`, `main` 기준. **태깅 사전 14축·159태그 / P0 7축·84태그 판정 규칙 / 혼동 사례 10개 / 4상태 계약 / JSON Schema / 합성 검증기·85개 테스트**까지 GitHub 등록 완료. **n8n 실제 workflow, 외부 AI 태깅 실행, DERIVED DB, 내부 관리 대시보드는 미구현.** 10/21부터 n8n 시작, 오늘은 더 이상 n8n 변경하지 않는다. **P6 RAW 수집기/실 Meta 호출/운영 DB에는 변경 없음.**
 
 ## 0. 새 채팅방 복원 순서 (반드시)
 
@@ -39,9 +41,9 @@ n8n (이 저장소; 내일 시작)
 - [x] `observed` / `unknown` / `not_applicable` / `not_evaluated` 출력 상태 명시. 입력 불가·영상 분석 미지원은 job-level. v1.0의 `not_observed` 자동 치환 금지.
 - [x] `scripts/validate_taxonomy.py` 업로드: 원본 태그 보존, tag whitelist, 결과 P0/P1 구분, 필수 근거·상태·해시·timezone 검증.
 - [x] `tests/test_tagging_contract.py` (합성 22개) + `tests/test_json_schema_contract.py` (합성 14개) + `fixtures/sample_valid_tag_result.json` + `.github/workflows/taxonomy-check.yml` 등록.
-- [x] 정적 JSON 12개 검사 PASS, 로컬 동등코드 합성 테스트 36/36 PASS, 정규화 [JSON Schema](taxonomy/p0_tag_result.schema.json) 통과 및 QA 문서 기록. 별도 팀원용 Excel 7개 시트 완료(채팅 첨부, GitHub에는 없음).
+- [x] 정적 JSON 12개 검사 PASS, 로컬 동등코드 합성 테스트 85/85 PASS(추가 작업 최신판), 정규화 [JSON Schema](taxonomy/p0_tag_result.schema.json) 통과 및 QA 문서 기록. 별도 팀원용 Excel 7개 시트 완료(채팅 첨부, GitHub에는 없음).
 
-**중요 미검증:** 로컬 대응 구현 36개 테스트는 PASS이나, **GitHub 저장소의 실제 Actions CI 성공 로그는 현재 확보 못함**. `git clone` 네트워크 DNS 실패. 이미지 실분류·모델 예측 정확도·오호라 실무자 승인 또한 미검증. '실제 태깅 완성'이라고 말하지 않는다.
+**중요 미검증:** 로컬 대응 구현 85개 테스트는 PASS이나, **GitHub 저장소의 실제 Actions CI 성공 로그는 현재 확보 못함**. `git clone` 네트워크 DNS 실패. 이미지 실분류·모델 예측 정확도·오호라 실무자 승인 또한 미검증. '실제 태깅 완성'이라고 말하지 않는다.
 
 ## 3. 10/21(수) 바로 시작할 최소 단위
 
@@ -50,6 +52,7 @@ n8n (이 저장소; 내일 시작)
 python -m pip install -r requirements-test.txt
 python scripts/validate_taxonomy.py
 python scripts/validate_taxonomy.py --result fixtures/sample_valid_tag_result.json
+python -m scripts.validate_model_output --input fixtures/sample_p0_model_output.json
 python -m unittest discover -s tests -v
 ```
 
@@ -88,7 +91,7 @@ python -m unittest discover -s tests -v
 ## 6. 이번 작업 결과 증거
 
 - 등록 파일: `taxonomy/tag_schema_v1_1.json`, `taxonomy/tag_rules_v1_1.json`, `docs/TAXONOMY_RULEBOOK_v1_1.md`, `docs/TAXONOMY_QA_2026-10-20.md`, `scripts/validate_taxonomy.py`, `tests/test_tagging_contract.py`, `tests/test_json_schema_contract.py`, `taxonomy/p0_tag_result.schema.json`, `requirements-test.txt`, `fixtures/sample_valid_tag_result.json`, `.github/workflows/taxonomy-check.yml`.
-- GitHub에서 사전·규칙·fixture·검증 코드를 fetch-back 하여 정적 검사 12/12 PASS. 36개 Python 합성 테스트는 **로컬 대응본에서 36/36 PASS**, 연결된 GitHub Actions CI는 **실행 상태/성공 미확인**.
+- GitHub에서 사전·규칙·fixture·검증 코드를 fetch-back 하여 정적 검사 12/12 PASS. 85개 Python 합성 테스트는 **로컬 대응본에서 85/85 PASS**, 연결된 GitHub Actions CI는 **실행 상태/성공 미확인**.
 - rollback은 v1.1 신규 파일·그 관련 코드와 테스트를 revert하는 것으로 가능. 기존 v1.0-draft 및 P6 RAW는 변경 없음.
 
 ## 7. 반드시 남길 인수인계 형식
@@ -104,3 +107,13 @@ HANDOFF.md + STATUS.md 최신화 및 GitHub fetch-back:
 ```
 
 프로젝트 번호: **미배정**. 번호 등록부/BOOK에서 실 매핑 확인 전 임의 번호 할당 금지.
+
+## 다음날 세부 실행 로드맵 (2026-10-21)
+
+1. GitHub checkout/Actions에서 **등록된 85개 synthetic tests를 실제 해당 커밋으로 재검증** (기존에는 로컬 동등 코드만 검증); 실패 항목만 보수.
+2. n8n 실행 환경과 외부 비전 AI 호출 권한·비용 및 실이미지 전송 범위 확인. P6 RAW는 승인된 read-only export만.
+3. **모델에 7개 P0 축을 요청** → `validate_model_output` → `normalize_p0_output(model_result, trusted_metadata)` → `check_result` 및 JSON Schema → **별도 DERIVED 개발 DB**에만 저장. 이 연결은 설계만 준비됐으며 n8n 실제 연동은 미구현.
+4. 동일 이미지 중복 AI 호출 방지·실패 기록·비네일 작업 분기 및 화면 조회가 재분석을 일으키지 않는지 후속 검증.
+5. 개인정보/운영 원본·Meta 토큰·실비용·서비스 활성화 등은 별도 사용자 승인 필요. 공개 저장소에는 첨부 금지.
+
+참조 정본: `taxonomy/tag_schema_v1_1.json`, `taxonomy/tag_rules_v1_1.json`, `taxonomy/p0_tag_result.schema.json`. **오호라 공식 내부 태깅표가 아닌 프로젝트 제안 기준**.
