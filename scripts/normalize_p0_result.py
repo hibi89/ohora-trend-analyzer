@@ -29,6 +29,9 @@ def normalize_p0_output(model_output: dict, trusted: dict) -> dict:
     missing = [field for field in TRUSTED_REQUIRED if field not in trusted]
     if missing:
         raise ValueError("missing trusted fields: " + ", ".join(missing))
+    observation_id = trusted.get("source_observation_id")
+    if observation_id is not None and (not isinstance(observation_id, str) or not observation_id.strip()):
+        raise ValueError("source_observation_id must be a non-empty string or null")
     if model_output["is_nail_design"] is False:
         return {
             "job_status": "non_nail",
