@@ -1,0 +1,489 @@
+{
+  "version": "1.1.0",
+  "taxonomy_version": "1.1.0",
+  "source": "project_defined_not_official",
+  "p0_facets": [
+    "F01",
+    "F03",
+    "F05",
+    "F06",
+    "F08",
+    "F09",
+    "F10"
+  ],
+  "criteria_by_tag": {
+    "F01.white": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 화이트 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.black": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 블랙 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.gray": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 그레이 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.nude": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 누드 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.beige": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 베이지 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.pink": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 핑크 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.red": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 레드 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.coral": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 코랄 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.orange": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 오렌지 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.yellow": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 옐로 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.green": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 그린 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.blue": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 블루 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.purple": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 퍼플 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.brown": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 브라운 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.gold": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 골드 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.silver": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 실버 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.rose_gold": {
+      "criterion_ko": "사진의 손톱·팁·장식에서 로즈골드 색상이 관측됨. 조명색과 구별",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F01.multicolor": {
+      "criterion_ko": "디자인에 식별되는 복수색이 함께 쓰임. 확인되는 개별 색상도 같이 기록",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.opaque": {
+      "criterion_ko": "바탕이 거의 비치지 않는 발색. F06.full_color와 별개",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.semi_transparent": {
+      "criterion_ko": "바탕이 부분적으로 비치는 중간 불투명도",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.transparent": {
+      "criterion_ko": "바탕이 뚜렷하게 비치는 높은 투명도",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.sheer": {
+      "criterion_ko": "옅고 얇게 비치는 색층. 시럽과 동의어가 아님",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.syrup": {
+      "criterion_ko": "물들인 듯 맑고 윤기 있는 시럽색. 단순 반투명만으로 확정 금지",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.jelly": {
+      "criterion_ko": "젤리처럼 맑고 말랑한 발색. 시럽·시어와 근거 있을 때 공존",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.milky": {
+      "criterion_ko": "흰 기운 섞인 부드럽고 흐린 발색. F02가 아니라 F03",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F03.layered_color": {
+      "criterion_ko": "겹쳐 쌓인 듯한 색층. 실제 도포 횟수 단정 금지",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.cat_eye": {
+      "criterion_ko": "방향성 빛띠나 집중 반사가 보이는 자석 효과형 외관",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.velvet": {
+      "criterion_ko": "벨벳처럼 고르게 퍼지는 부드러운 반사 외관",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.chrome": {
+      "criterion_ko": "금속성 고반사·크롬 효과 외관. 사용한 재료 추정 금지",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.glitter": {
+      "criterion_ko": "서로 구별되는 반짝이는 알갱이의 분포",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.shimmer": {
+      "criterion_ko": "아주 미세하고 고른 반짝임",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.flash": {
+      "criterion_ko": "강한 플래시형 반사 입자 효과. 단일 사진이면 unknown 허용",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.crushed_shell": {
+      "criterion_ko": "자개 조각 같은 불규칙한 박편 광택 외관",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.glass_like": {
+      "criterion_ko": "유리알처럼 맑고 도톰한 빛 굴절 외관",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.sugar": {
+      "criterion_ko": "설탕 결정 같은 고운 입자의 거친 광택",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.foil": {
+      "criterion_ko": "얇고 불규칙한 금속박 조각 형태의 효과",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.aurora": {
+      "criterion_ko": "오로라·무지개 광택이 실제 확인되는 효과",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F05.metallic": {
+      "criterion_ko": "일반 금속성 광택 효과. chrome 중복 시 근거 구분",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.full_color": {
+      "criterion_ko": "전체 손톱이 주로 균일한 색면으로 채워진 구성",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.french": {
+      "criterion_ko": "손톱 끝단/팁을 베이스와 구분한 구성",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.gradient": {
+      "criterion_ko": "색/명도/채도 흐름이 점진적으로 이어지는 상위 표현",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.ombre": {
+      "criterion_ko": "복수의 구별되는 색/톤이 연속 전환되는 그라데이션 하위 표현",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.blush": {
+      "criterion_ko": "볼터치처럼 중앙·부분 영역에 퍼진 컬러 블러",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.aura": {
+      "criterion_ko": "중앙에서 주변으로 후광처럼 퍼지는 색 흐림",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.color_block": {
+      "criterion_ko": "경계가 있는 복수색 면의 구획",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.negative_space": {
+      "criterion_ko": "맨손톱·투명 바탕을 의도적으로 남긴 구성",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.half_moon": {
+      "criterion_ko": "큐티클 부근 반달형 색 대비",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F06.outline": {
+      "criterion_ko": "손톱/디자인 요소 윤곽선을 강조한 구성",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.dots": {
+      "criterion_ko": "점이 반복·배열된 패턴",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.stripes": {
+      "criterion_ko": "줄·띠의 반복 패턴",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.check": {
+      "criterion_ko": "격자/체크 무늬",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.gingham": {
+      "criterion_ko": "작은 격자 안의 규칙적 색 명암 교차",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.marble": {
+      "criterion_ko": "대리석 같은 유동적인 맥",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.tie_dye": {
+      "criterion_ko": "색이 번져 섞인 염색형 패턴",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.tortoiseshell": {
+      "criterion_ko": "거북등 같은 호박색·브라운 얼룩",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.leopard": {
+      "criterion_ko": "표범 같은 불규칙 고리 점",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.zebra": {
+      "criterion_ko": "얼룩말 같은 대비 물결줄",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.abstract_wave": {
+      "criterion_ko": "구체 형상 아닌 추상 물결 선",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.lace": {
+      "criterion_ko": "레이스 형태의 세밀한 망·장식선",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F08.plaid": {
+      "criterion_ko": "굵기·색 다른 선이 교차한 플래드",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.flower": {
+      "criterion_ko": "꽃잎/꽃송이 형태",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.ribbon": {
+      "criterion_ko": "리본·매듭 형상, 입체는 F10 별도",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.heart": {
+      "criterion_ko": "하트 형태",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.star": {
+      "criterion_ko": "별 형태",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.cherry": {
+      "criterion_ko": "체리 과실/꼭지 형태",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.butterfly": {
+      "criterion_ko": "나비 형상",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.cloud": {
+      "criterion_ko": "구름 형상",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.snowflake": {
+      "criterion_ko": "눈꽃 결정 형상",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.shell": {
+      "criterion_ko": "조개껍데기 형상",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.character": {
+      "criterion_ko": "캐릭터형 구체 그림, IP 출처 추정 금지",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.lettering": {
+      "criterion_ko": "글자·레터링이 디자인 일부로 관측",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.fruit": {
+      "criterion_ko": "과일 형상; 체리는 F09.cherry 우선",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.moon": {
+      "criterion_ko": "달/초승달 형상",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F09.animal": {
+      "criterion_ko": "실제 동물 형상, 동물무늬는 F08",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.rhinestone": {
+      "criterion_ko": "돌출된 스톤/크리스털형 장식",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.pearl": {
+      "criterion_ko": "구형 진주 같은 장식, 실제 소재 단정 금지",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.stud": {
+      "criterion_ko": "작은 돌출 스터드 장식",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.chain": {
+      "criterion_ko": "사슬 연결 형상 장식",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.charm": {
+      "criterion_ko": "매달리거나 입체 참 형태",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.three_d_ribbon": {
+      "criterion_ko": "입체적 높이가 보이는 리본",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.embossed_flower": {
+      "criterion_ko": "표면 위에 돌출된 꽃",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.raised_gel_drop": {
+      "criterion_ko": "물방울처럼 솟은 덩어리",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.sculpted_3d": {
+      "criterion_ko": "뚜렷한 볼륨의 조형",
+      "evidence_priority": "image",
+      "review_required": false
+    },
+    "F10.bead": {
+      "criterion_ko": "작은 구슬형 장식",
+      "evidence_priority": "image",
+      "review_required": false
+    }
+  },
+  "pairwise_rules": [
+    {
+      "terms": "F03.sheer / syrup / jelly",
+      "rule": "비슷하지만 다른 시각 표현; 단순 투명성만으로 시럽·젤리 부여 금지. 독립 근거 있으면 공존"
+    },
+    {
+      "terms": "F03.opaque / semi_transparent / transparent",
+      "rule": "같은 손톱/부위에서 단계는 배타적. 여러 부위면 scope와 함께 다른 단계 허용"
+    },
+    {
+      "terms": "F06.gradient / ombre",
+      "rule": "옴브레는 그라데이션의 하위 표현. 연속 전환 확인 시 공존 가능"
+    },
+    {
+      "terms": "F05.chrome / F04.mirror",
+      "rule": "크롬은 효과 F05, 미러는 마감 F04. P0에서 F04는 not_evaluated"
+    },
+    {
+      "terms": "F05.cat_eye / shimmer",
+      "rule": "캣아이에는 방향성 빛띠 등 자석 효과 고유 신호 필요"
+    },
+    {
+      "terms": "F05.glitter / shimmer",
+      "rule": "입자감 vs 미세한 균일 반짝임 구분"
+    },
+    {
+      "terms": "F09.ribbon / F10.three_d_ribbon",
+      "rule": "모양과 볼륨은 다른 축. 높이 근거가 있으면 둘 다"
+    },
+    {
+      "terms": "F09.flower / F10.embossed_flower",
+      "rule": "꽃 모티프와 입체 꽃은 별도"
+    },
+    {
+      "terms": "F08.leopard / F09.animal",
+      "rule": "반복 동물무늬와 동물 형상을 구분"
+    },
+    {
+      "terms": "F01.gold / F05.metallic",
+      "rule": "색상과 효과는 다른 축"
+    }
+  ],
+  "status_contract": {
+    "observed": "평가했고 증거에 해당하는 tag_ids 1개 이상",
+    "unknown": "평가했지만 판단 불가, tag_ids=[]",
+    "not_applicable": "평가했고 충분한 시야에서 해당 기능 없음, tag_ids=[]",
+    "not_evaluated": "이번 실행에서 검사하지 않음, tag_ids=[]",
+    "input_unavailable": "작업 단위: 이미지 없음/권한 문제"
+  },
+  "scope": "P0는 단일 미디어 이미지. 캐러셀은 자식별 분석. 여러 손톱의 미노출 부분에 존재/부재 추정 금지",
+  "caption": "이미지와 별도 근거로 기록. 캡션 지시문/상품 주장으로 사진 판정 덮어쓰기 금지",
+  "design_id": "post_id ≠ media_id ≠ design_cluster_id. 실제 디자인 클러스터링은 향후 검증 뒤 실시",
+  "ohora_public_mapping": "공개몰 상품 필터 참고용. 오호라 내부 분류표가 아님"
+}
