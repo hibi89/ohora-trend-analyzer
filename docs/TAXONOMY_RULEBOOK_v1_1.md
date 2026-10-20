@@ -70,3 +70,11 @@ Meta API에서 수집한 원본 게시물·미디어·시점별 반응 데이터
 - 오늘 이후 태그 ID 재정의·삭제 금지. 추가/규칙 변경 시 별도 버전을 발행하고 `taxonomy_version`, `model_id`, `prompt_version`과 결과 실행 이력을 남긴다.
 - `not_evaluated`는 검사하지 않은 축이다. 빈 태그 배열만으로 디자인 요소의 부재를 단정하지 않는다.
 - 판정 규칙서와 JSON이 충돌하면 담당자 검토 후 동일 버전으로 동기화하고 테스트를 재실행한다.
+
+## v1.1 검증·저장 직전 요구사항 (2026-10-20 추가)
+
+- [P0 정규화 결과 JSON Schema](../taxonomy/p0_tag_result.schema.json) 사용. 모든 14축을 정확히 한 번씩 포함하되 P0 7개만 실제 평가, P1 7개는 반드시 `not_evaluated`.
+- `not_applicable`에는 실제 검사한 눈에 보이는 범위에서 부재를 판단한 근거를 `evidence_note`에 기록한다. 부분 이미지에서 다른 손톱의 부재를 단정하지 않는다.
+- 잘못된 `facet_id`, `status` 자료형은 예외로 프로그램을 중단시키지 않고 검증 오류로 처리한다.
+- 정규화 결과는 모델 원본 출력과 구분한다. LLM provider Structured Output에 이 전체 JSON Schema를 그대로 넣으면 호환성 문제가 발생할 수 있으므로 모델 출력은 별도 소형 계약으로 받는다.
+- 로컬 합성 계약 테스트 36건 PASS(원본 GitHub Actions 실행 결과는 별도 확인 필요). 상세 인계: [TAGGING_INTEGRATION_HANDOFF_v1_1.md](TAGGING_INTEGRATION_HANDOFF_v1_1.md).
