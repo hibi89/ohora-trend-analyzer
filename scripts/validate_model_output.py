@@ -91,6 +91,8 @@ def validate_model_output(result: object) -> list[str]:
             errors.append(f"{facet_id}: invalid scope")
         if status == "not_applicable" and (not isinstance(scope, str) or not scope.strip()):
             errors.append(f"{facet_id}: not_applicable requires visible scope")
+        if status == "not_applicable" and (not isinstance(source, str) or source not in VISUAL_SOURCES):
+            errors.append(f"{facet_id}: not_applicable requires image evidence")
     if seen != P0:
         errors.append(f"missing P0 facets: {sorted(P0 - seen)}")
     return errors
