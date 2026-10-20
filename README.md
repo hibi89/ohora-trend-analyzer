@@ -1,3 +1,5 @@
+> **2026-10-20 태깅 단계 최종 기준:** 14축/159태그 v1.1 유지, 7축/84태그 P0, [오프라인 smoke](docs/TAGGING_SMOKE_RUNBOOK_2026-10-20.md) 명령 및 **97개 합성 테스트 정의**. **원격 CI 통과·실 AI/n8n/DB 연동 미확인**. 다음 작업은 [HANDOFF.md](HANDOFF.md) 우선. n8n은 10/21 시작 예정.
+
 # OHORA Trend Analyzer
 
 > **2026-10-20 KST — 설계 단계 / 실행 기능 미구현**
@@ -60,6 +62,7 @@ python scripts/validate_taxonomy.py
 python scripts/validate_taxonomy.py --result fixtures/sample_valid_tag_result.json
 python -m scripts.validate_model_output --input fixtures/sample_p0_model_output.json
 python -m pip install -r requirements-test.txt
+python -m scripts.smoke_p0_pipeline
 python -m unittest discover -s tests -v
 ```
 
