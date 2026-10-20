@@ -90,6 +90,8 @@ def check_dictionary() -> list[str]:
 def check_result(data: dict) -> list[str]:
     """Validate structure, not visual-semantic truth or model accuracy."""
     errors: list[str] = []
+    if not isinstance(data, dict):
+        return ['tagging result must be a JSON object']
     try:
         dictionary = load(TAXONOMY)
         allowed_by_facet = {
@@ -131,7 +133,7 @@ def check_result(data: dict) -> list[str]:
             errors.append(f"facet row {index} is not an object")
             continue
         facet = row.get("facet_id")
-        if facet not in ALL:
+        if not isinstance(facet, str) or facet not in ALL:
             errors.append(f"unknown facet {facet}")
             continue
         if facet in seen:
@@ -139,7 +141,7 @@ def check_result(data: dict) -> list[str]:
         seen.add(facet)
         status = row.get("status")
         tag_ids = row.get("tag_ids")
-        if status not in STATUSES:
+        if not isinstance(status, str) or status not in STATUSES:
             errors.append(f"invalid status {facet}: {status}")
             continue
         if not isinstance(tag_ids, list) or any(not isinstance(x, str) for x in tag_ids):
@@ -172,7 +174,9 @@ def check_result(data: dict) -> list[str]:
             errors.append(f"observed requires evidence source and explanation {facet}")
         if status == "unknown" and (not isinstance(note, str) or not note.strip()):
             errors.append(f"unknown requires abstention reason {facet}")
-        if status == "not_evaluated" and (source is not None or confidence is not None):
+        if status == "not_applicable" and (not isinstance(note, str) or not note.strip()):
+            errors.append(f"not_applicable requires a visible-scope reason {facet}")
+        if status == "not_evaluated" and (source is not None or confidence is not None or note not in (None, "")):
             errors.append(f"not_evaluated cannot assert evidence/confidence {facet}")
     if seen != ALL:
         errors.append(f"facet coverage mismatch: missing {sorted(ALL - seen)}")
