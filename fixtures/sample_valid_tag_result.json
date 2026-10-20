@@ -1,0 +1,150 @@
+{
+  "schema_version": "analyzer_tag_result_v0_1",
+  "post_id": "SYNTHETIC_POST_001",
+  "media_id": "SYNTHETIC_MEDIA_001",
+  "taxonomy_version": "1.1.0",
+  "model_id": "synthetic-only",
+  "prompt_version": "contract-test-1",
+  "analyzed_at": "2026-10-20T17:00:00+09:00",
+  "analysis_input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "is_nail_design": true,
+  "review_status": "unreviewed",
+  "source_provenance": {
+    "origin": "synthetic_fixture",
+    "note": "no actual photo or AI inference"
+  },
+  "facet_results": [
+    {
+      "facet_id": "F01",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F02",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    },
+    {
+      "facet_id": "F03",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F04",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    },
+    {
+      "facet_id": "F05",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F06",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F07",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    },
+    {
+      "facet_id": "F08",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F09",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F10",
+      "status": "unknown",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": "합성 구조 테스트: 시각적 판단 결과가 아님",
+      "scope": "synthetic_contract_only"
+    },
+    {
+      "facet_id": "F11",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    },
+    {
+      "facet_id": "F12",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    },
+    {
+      "facet_id": "F13",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    },
+    {
+      "facet_id": "F14",
+      "status": "not_evaluated",
+      "tag_ids": [],
+      "confidence": null,
+      "evidence_source": null,
+      "evidence_note": null,
+      "scope": null
+    }
+  ],
+  "structure": {
+    "S01": null,
+    "S02": null,
+    "S03": null,
+    "S04": null
+  }
+}
