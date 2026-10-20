@@ -1,8 +1,10 @@
 # STATUS — OHORA Trend Analyzer
 
-> **2026-10-20 KST — 태깅표 v1.1 정본 등록 완료 (현재 우선)**
+> **최신 검증 문서:** [TAXONOMY_QA_2026-10-20.md](docs/TAXONOMY_QA_2026-10-20.md), [P0 정규화 JSON Schema](taxonomy/p0_tag_result.schema.json), [n8n 인계](docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md). XLSX는 7개 시트 사용자 채팅 첨부이며 GitHub 정본은 JSON.
 >
-> **오늘의 범위: 태깅표·정적 검사·문서 인수인계. n8n·실 AI 이미지 태깅·DERIVED 운영 DB·내부 대시보드 구현은 내일 이후.**
+> **2026-10-20 KST — 태깅표 v1.1 완료: JSON Schema 및 36개 로컬 합성 검사 PASS (현재 우선)**
+>
+> **오늘의 범위: 태깅표·정적 검사·JSON Schema·문서 인수인계. 실제 n8n·AI 이미지 태깅·DERIVED DB·내부 대시보드는 내일 이후.**
 >
 > 기준 파일: [v1.1 표준 사전](taxonomy/tag_schema_v1_1.json) / [84개 세부 판정 규칙](taxonomy/tag_rules_v1_1.json) / [운영 기준서](docs/TAXONOMY_RULEBOOK_v1_1.md) / [QA 증거](docs/TAXONOMY_QA_2026-10-20.md). 이것은 **팀 프로젝트용 분류안**이며 오호라 공식 내부 기준 또는 실제 AI 정확도 검증 결과가 아니다.
 
@@ -22,8 +24,8 @@
 | **프로젝트용 태깅 사전 v1.1** | **완료** | 14개 F축·159개 원본 태그 ID·S01~S04, 기존 ID/이름·동의어 보존 |
 | **P0 7축(84태그) 판정 기준** | **완료** | `taxonomy/tag_rules_v1_1.json`: 모호 용어 경계 규칙 10개 |
 | **태깅 JSON 데이터 구조 정적 검사** | **통과** | 기존 159개 ID·명칭 보존 등 GitHub fetch 기반 12개 구조 검사 PASS |
-| **태깅 결과 검증 코드** | **등록 완료 / 실행 증거 미확인** | `scripts/validate_taxonomy.py` + `tests/test_tagging_contract.py` 16개 합성 테스트 |
-| **GitHub Actions CI 검사** | **workflow 등록 / 실제 PASS 미확인** | `.github/workflows/taxonomy-check.yml`. commit statuses 조회 빈 목록; clone DNS 실패 |
+| **태깅 결과 검증 코드** | **등록 완료 / 실행 증거 미확인** | `scripts/validate_taxonomy.py` + `tests/test_tagging_contract.py` 22개 + `tests/test_json_schema_contract.py` 14개, 합계 36개 합성 테스트 |
+| **GitHub Actions CI 검사** | **workflow 및 test dependency 등록 / GitHub CI 결과 미확인** | `.github/workflows/taxonomy-check.yml`, `requirements-test.txt`; 로컬 대응코드 36/36 PASS와 구별 |
 | 태깅 사전 설명서·QA | **완료** | `docs/TAXONOMY_RULEBOOK_v1_1.md` + `docs/TAXONOMY_QA_2026-10-20.md` |
 | P6↔Analyzer 읽기 전용 실제 export 연결 | **미구현/미검증** | P6 운영 DB 소유권 침범 금지 |
 | n8n 실제 workflow import/실행 | **미구현** | 10/21 시작 목표 |
@@ -45,8 +47,8 @@
 
 ## 오늘 실시한 검증 / 한계
 
-- 로컬 사전 `verify_tagging_v1_1.py` 구조 검사 PASS; 이후 새로 등록된 GitHub JSON 파일을 다시 읽어 12개 구조 항목 검사 PASS.
-- GitHub 등록된 Python 회귀 16개, CI는 **실행 완료/성공 증거가 아직 없음**. 임의 PASS 주장 금지.
+- 로컬 사전 `verify_tagging_v1_1.py` 구조 검사 PASS, 대응 검증기 22개+JSON Schema 14개 **로컬 합성 검사 36/36 PASS**. GitHub 최신 파일을 다시 읽어 17개 파일 존재 및 14축/159 ID/84 규칙/36 테스트 함수 확인.
+- 로컬 별도 작업공간의 GitHub 대응 검증 코드 + JSON Schema 회귀 **36/36 PASS**. GitHub Actions에서 실제 해당 커밋의 **CI 실행 완료/성공 증거는 아직 없음**. 임의 PASS 주장 금지.
 - 컨테이너의 `git clone`은 `Could not resolve host: github.com` 실패. 같은 네트워크 방식 반복 금지; GitHub Actions 또는 사용자의 로컬 환경에서 검증.
 - 타인의 GitHub 파일·실제 사진·오호라 내부 분류에 대한 확인 없이 공식 표준으로 주장하지 않는다.
 
