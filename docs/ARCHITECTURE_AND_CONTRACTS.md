@@ -1,3 +1,5 @@
+> **2026-10-20 변경 참고:** 태깅 정본은 [v1.1 사전](../taxonomy/tag_schema_v1_1.json), [84개 판정 규칙](../taxonomy/tag_rules_v1_1.json). 아래 설명용 JSON은 개략 필드 구조를 보여주는 **부분 예시**로서 P0 계약의 14개 facet 전부를 포함하지 않으므로 validator 입력으로 사용하면 안 된다. 완전한 검증용 JSON은 [합성 fixture](../fixtures/sample_valid_tag_result.json)를 사용할 것.
+
 # 아키텍처 및 RAW↔DERIVED 데이터 계약 v0.1
 
 작성 2026-10-20 | 상태: **설계 제안, 구현/운영 적용 전** | 소유 범위: Analyzer 저장소
@@ -75,12 +77,12 @@ P6 동결 요소: 공식 294개 계정, A/B/C 3 API 레인, limit=4, 일일 2라
   "post_id": "DEMO_POST_01",
   "media_id": "DEMO_MEDIA_01",
   "source_observation_id": "DEMO_OBS_01",
-  "taxonomy_version": "1.0.0-draft",
+  "taxonomy_version": "1.1.0",
   "evaluated_facets": ["F01", "F03", "F05", "F06", "F08", "F09", "F10"],
   "model_id": "TO_BE_DECIDED",
   "prompt_version": "prompt-p0-v0",
   "analyzed_at": "2026-10-21T00:00:00Z",
-  "analysis_input_hash": "SHA256_PLACEHOLDER",
+  "analysis_input_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   "is_nail_design": true,
   "review_status": "unreviewed",
   "facet_results": [
