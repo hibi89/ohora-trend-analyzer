@@ -1,6 +1,8 @@
-# 태깅 기준 결정 기록 및 P0 판정 규칙 (v1.1 동결 전)
+# 태깅 기준 결정 기록 및 P0 판정 규칙 — v1.1 프로젝트 기준
 
-작성 2026-10-20 KST | 상태: **v1.1 제안 / 아직 동결하지 않음**.
+작성 2026-10-20 KST | 상태: **v1.1 프로젝트 기준 파일 등록·정적 구조 검증 / AI 정확도·오호라 내부 검수 미완료**.
+
+> **최신 기준:** [tag_schema_v1_1.json](../taxonomy/tag_schema_v1_1.json) + [tag_rules_v1_1.json](../taxonomy/tag_rules_v1_1.json) + [TAXONOMY_RULEBOOK_v1_1.md](TAXONOMY_RULEBOOK_v1_1.md). 기존 v1.0-draft는 변경하지 않고 보존한다. 실제 AI 성능이나 n8n 연결이 검증된 것은 아니다.
 원본 14축·159태그는 [JSON 스냅샷](../taxonomy/tag_schema_v1_0_draft.json) 및 [v1.0 설명서](TAXONOMY_ORIGINAL_v1_0_DRAFT.md)를 기준으로 한다. 오호라 공식 **내부** 분류표가 아니라 팀 제안 표준이다.
 
 ## 1. 목적
@@ -75,15 +77,15 @@
 6. 오호라 **공개몰** 필터(Chrome/Magnet/Jelly/Gem/Mani/Pedi/Product Type 등)는 대응표를 통해 연결하되 내부 표준 확인 전 공식 내부 용어라고 주장 금지.
 7. 상품 LINEUP/PEDI/MANI/GEL STRIPS/GEL PRESS ONS와 SNS 네일 사진을 직접 동치 취급하지 않는다.
 
-## 6. v1.1 최종 동결 체크리스트 (미완료)
+## 6. v1.1 기준 파일 등록 및 후속 검수 체크리스트
 
-- [ ] 기존 159개 `tag_id` 중복 및 facet prefix 전수 검사.
+- [x] 기존 159개 `tag_id` 중복 및 facet prefix 전수 검사 (오프라인 사전 검사 통과).
 - [ ] 위 모호 용어 정의가 prompt+validator의 테스트 케이스로 반영됐는가.
-- [ ] `not_observed` 폐기/기존 레코드 호환 정책 문서화.
-- [ ] 7축 P0/7축 P1의 필드 기대값 정합성 검사.
+- [x] 새 v1.1에서 `not_observed` 제거 및 자동 변환 금지 문서화 (구버전 실레코드 마이그레이션 테스트는 추후).
+- [x] 7축 P0/7축 P1의 필드 기대값 정합성 정적 검사.
 - [ ] 비네일 게시물, 릴스/비디오, 이미지 URL 만료 처리 정책 결정.
 - [ ] 샘플 이미지 30~50장(권한 확인)으로 오분류/근거 오류 검토 계획 확정.
-- [ ] 사용자 검토 후 v1.1을 별도 신규 파일로 발행 (현재는 미동결).
+- [x] 사용자 지시에 따라 v1.1을 원본을 덮지 않는 별도 신규 파일로 발행 (프로젝트 기준, 고객사 공식 승인 아님).
 
 ## 7. AI 프롬프트에 들어갈 최소 명령
 
@@ -98,4 +100,4 @@ All unrequested facets are not_evaluated.
 Return strict JSON and tag evidence; do not include prose outside JSON.
 ```
 
-이 파일은 **판정 규칙 설계**이며 AI 프롬프트·실행 코드로 자동 적용된 것이 아니다.
+**정적 규칙 파일 등록 및 JSON 검증기 추가는 완료했으나**, 시각적 분류의 판정 정확도·실 AI 프롬프트 준수·n8n 연결·GitHub CI의 PASS 결과는 별도 확인이 필요하다.
