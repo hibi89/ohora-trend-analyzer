@@ -1,0 +1,53 @@
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+*token*.txt
+**/.n8n/
+
+# Real user/source data never committed
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.csv
+*.xlsx
+*.parquet
+*.jsonl
+raw_data/
+real_data/
+exports/
+backups/
+downloads/
+media_cache/
+images/
+private/
+secrets/
+
+# Python / editors / OS
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated artifacts
+dist/
+build/
+coverage/
+htmlcov/
+*.log
+
+# NOTE
+# Synthetic JSON fixtures, approved redacted docs, and n8n workflow JSON
+# are intentionally NOT excluded; never include live credentials in them.
