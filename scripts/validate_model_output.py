@@ -81,7 +81,7 @@ def validate_model_output(result: object) -> list[str]:
         source = facet.get("evidence_source")
         if source is not None and (not isinstance(source, str) or source not in KNOWN_SOURCES):
             errors.append(f"{facet_id}: bad evidence source")
-        if status == "observed" and source not in VISUAL_SOURCES:
+        if status == "observed" and (not isinstance(source, str) or source not in VISUAL_SOURCES):
             errors.append(f"{facet_id}: visual tag requires image evidence")
         note = facet.get("evidence_note")
         if not isinstance(note, str) or not note.strip() or len(note) > 300:
