@@ -1,3 +1,5 @@
+> **2026-10-20 기준:** 태깅 사전과 판정 규칙 v1.1은 GitHub 등록 완료. [tag_schema_v1_1.json](../taxonomy/tag_schema_v1_1.json), [tag_rules_v1_1.json](../taxonomy/tag_rules_v1_1.json), [검증기](../scripts/validate_taxonomy.py) 및 [QA](TAXONOMY_QA_2026-10-20.md)를 우선한다. **실제 n8n workflow 파일은 아직 없음.**
+
 # n8n Workflow 설계 명세 — 2026-10-21~23 구현용
 
 상태: **노드·분기 설계만 완료 / workflow JSON 및 n8n 실제 실행은 아직 없음**.
@@ -55,7 +57,7 @@ Manual Trigger / Schedule Trigger(나중에)
 - 모델이 사진이 아닌 캡션을 근거로 태그를 붙이면 `evidence_source=caption`; 추정 정보의 검수 대상 분리.
 - 분류용 프롬프트/결과/validator는 버전 관리.
 - 크롬과 미러처럼 **다른 축**이면 동시 태깅 가능(단 F04는 P1이라 이번 주 미평가).
-- not_observed(draft)→not_evaluated(v1.1) 자동 일괄치환 금지. 판정 상태 계약을 사용자 확정 후 테스트.
+- v1.0-draft의 not_observed는 모호하므로 v1.1의 not_evaluated로 자동 일괄치환하지 않는다. v1.1 상태 계약 및 검증 코드는 저장소에 등록했으며, 실제 Python 회귀·n8n 사용 검증은 후속.
 
 ## 5. Idempotency와 실패 복구
 
@@ -65,7 +67,7 @@ Manual Trigger / Schedule Trigger(나중에)
 - 성공 저장은 트랜잭션 처리, 오류 시 어느 단계에서 실패했는지 구분. 외부 모델 호출 후 DB 쓰기 실패 시 같은 이미지로 재호출하기 전에 검증 가능한 durable AI 응답 스냅샷이 있으면 이를 재사용한다.
 - retry 정책 제안: 429/5xx/일시적 네트워크는 제한 횟수+백오프; 400/권한·스키마 오류는 즉시 분기. 실제 API 제한/비용 확인 후 수치 확정.
 - `Error Trigger`/분기에서 `job_id`, `stage`, `error_code`, `retry_after`, `sensitive_redacted_message`, 실행 시각 기록.
-- 현재 n8n 실행 개시 자체는 사용자 승인 없이 진행하지 않는다(특히 외부 AI 과금·실데이터 전송).
+- n8n 합성 fixture 기반 로직 개발은 사용자 계획에 따라 2026-10-21부터 가능하다. 단, 실제 Meta 호출·유료 외부 AI 요청·실데이터 전송·운영 DB 변경은 별도 승인/예산 확인 전 금지.
 
 ## 6. import/export 파일 계획
 
