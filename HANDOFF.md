@@ -1,119 +1,86 @@
-# HANDOFF — OHORA Trend Analyzer
+# HANDOFF — OHORA Trend Analyzer (채팅방 즉시 복원용)
 
-> **2026-10-20 KST — 오늘 추가 QA 작업 최종 인수인계 (이 문단 최우선):** 기존 태깅 v1.1 **14축·159태그 / P0 7축·84개 코드 불변**. 기존 36개 합성 검증을 모델 응답 검사기·JSON Schema·신뢰된 데이터 기반 정규화 코드까지 확장했다. 로컬 대응 구현 **85/85 synthetic PASS**, GitHub Actions 원격 PASS는 **미확인**. 추가 구현: `scripts/validate_model_output.py`(7축 AI 결과), `scripts/normalize_p0_result.py`(7→14축 신뢰정보 결합), `fixtures/sample_p0_model_output.json`, `tests/test_model_output_contract.py`, `tests/test_normalize_p0_result.py`, 엄격 JSON parser/결과 검증 개선. 문서: [프롬프트 계약](docs/P0_VISION_PROMPT_CONTRACT_v1_1.md), [수동 사진 QA](docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md), [추가 회귀 보고](docs/TAGGING_QA_EXTENSION_2026-10-20.md). **n8n workflow·실 VLM 호출·DERIVED 저장·실 P6 연동은 아직 0건**. 다음 채팅방은 이 문단→[STATUS.md](STATUS.md)→실 파일 순서로 확인한 뒤, 원격 CI 및 n8n 환경 확인부터 시작할 것.
-
-> **오늘 잔여 작업 종료(2026-10-20):** 태깅표 작업만 마무리. 기존 14축/159 IDs 보존, 7축/84 규칙, normalized JSON Schema, 엣지케이스 강화, 사용자용 Excel 7개 시트, 로컬 동등구현 합성 회귀 85/85 PASS(추가 작업 최신판). GitHub 등록 파일·인계 문서 최신화. **실 AI 이미지 분석·n8n·운영 DB 연결은 내일 이후**, CI 원격 PASS 별도 확인 필요.
+> **최종 갱신 2026-10-20 KST / `main`.** 태깅표 v1.1·모델 출력 검증기·14축 정규화기·합성 smoke 명령 준비. **총 97개 합성 test 함수 등록, 최신 CI 실제 PASS 미확인**. *이전에 검증한 85/85 로컬 대응 테스트와 혼동 금지.* 오늘 n8n은 시작하지 않았고, P6 원본 DB/Meta API/운영 데이터는 변경하지 않았다.
 >
-> **최신 인수인계: 2026-10-20 KST / 태깅표 v1.1 · 표준 출력 JSON Schema · 로컬 합성 테스트 85/85 PASS(추가 작업 최신판). 이 문서를 우선한다.**
->
-> GitHub `hibi89/ohora-trend-analyzer`, `main` 기준. **태깅 사전 14축·159태그 / P0 7축·84태그 판정 규칙 / 혼동 사례 10개 / 4상태 계약 / JSON Schema / 합성 검증기·85개 테스트**까지 GitHub 등록 완료. **n8n 실제 workflow, 외부 AI 태깅 실행, DERIVED DB, 내부 관리 대시보드는 미구현.** 10/21부터 n8n 시작, 오늘은 더 이상 n8n 변경하지 않는다. **P6 RAW 수집기/실 Meta 호출/운영 DB에는 변경 없음.**
+> **내일 첫 동작:** 실제 GitHub checkout 또는 GitHub Actions에서 97개 검사 실행 → 실행 환경 확인 → n8n synthetic 1건부터 연결.
 
-## 0. 새 채팅방 복원 순서 (반드시)
+## 1. 새 채팅방 작업자 필독 파일 순서
 
-1. [README](README.md), [AGENTS](AGENTS.md), [STATUS](STATUS.md), 이 `HANDOFF.md`를 최신 `main`에서 읽고 HEAD SHA 기록.
-2. [태깅 사전 v1.1](taxonomy/tag_schema_v1_1.json), [P0 84개 판정 규칙](taxonomy/tag_rules_v1_1.json), [기준서](docs/TAXONOMY_RULEBOOK_v1_1.md), [QA 보고](docs/TAXONOMY_QA_2026-10-20.md), [P0 JSON Schema](taxonomy/p0_tag_result.schema.json), [n8n 인계 계약](docs/TAGGING_INTEGRATION_HANDOFF_v1_1.md) 확인.
-3. [실행 설계도](docs/IMPLEMENTATION_PLAN.md), [RAW↔DERIVED 데이터 계약](docs/ARCHITECTURE_AND_CONTRACTS.md), [n8n 노드 명세](docs/N8N_WORKFLOW_SPEC.md), [내부 UI 설계](docs/INTERNAL_DASHBOARD_SPEC.md) 확인.
-4. 새 버전 명칭 혼동 금지: `taxonomy/tag_schema_v1_0_draft.json`은 **보존한 원본**, `taxonomy/tag_schema_v1_1.json`은 **프로젝트 개발 기준 정본**. 오호라 회사의 공식 비공개 내부 분류표가 아니다.
+1. [README.md](README.md) → [AGENTS.md](AGENTS.md) → [STATUS.md](STATUS.md) → 이 `HANDOFF.md`
+2. [v1.1 사전](taxonomy/tag_schema_v1_1.json) + [84개 P0 판정 규칙](taxonomy/tag_rules_v1_1.json) + [14축 JSON Schema](taxonomy/p0_tag_result.schema.json)
+3. [P0 smoke 검증 안내](docs/TAGGING_SMOKE_RUNBOOK_2026-10-20.md), [모델 7축 프롬프트 계약](docs/P0_VISION_PROMPT_CONTRACT_v1_1.md)
+4. [구현 설계도](docs/IMPLEMENTATION_PLAN.md), [원본/가공 데이터 계약](docs/ARCHITECTURE_AND_CONTRACTS.md), [n8n 노드 설계](docs/N8N_WORKFLOW_SPEC.md)
+5. [최신 정적 QA 기록](docs/TAGGING_QA_EXTENSION_2026-10-20.md), [수동 이미지 검수 프로토콜](docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md)
 
-## 1. 프로젝트 목적/시스템 경계
+기존 `taxonomy/tag_schema_v1_0_draft.json`은 원본 보존용이다. **개발 정본은 `taxonomy/tag_schema_v1_1.json`**. 오호라 내부 공식 표준이 아니라 제안 분류.
 
-사용자가 P6 수집기에 시간을 쓴 이유는 인스타그램 게시물/미디어의 **원본·반응 지표·관측 시점별 데이터·변경 이력을 안정적으로 보존**해 분석 알고리즘이나 태깅 기준을 바꾸더라도 재수집 없이 재해석할 수 있도록 하기 위함이다.
+## 2. 사용자가 이 설계를 만든 이유
 
-```text
-P6 Collector (다른 저장소; 원본 API 응답/관측/변경 이력)
-                │ read-only export/adapter [실제 방식 미확정]
-                ▼
-n8n (이 저장소; 내일 시작)
-  → 이미지+캡션 AI 태깅 (P0 7축)
-  → taxonomy v1.1 whitelist 및 결과 계약 검증
-  → 별도 DERIVED DB에 분석 이력 저장
-  → 읽기 전용 내부 대시보드 / 팀 프론트엔드
-```
+사용자는 KDT 오호라 프로젝트에서 **SNS 원본을 먼저 안정적으로 수집·보존해 훗날 태깅 기준·AI 모델·트렌드 분석을 재실행할 수 있는 자산으로 만들고자 했다.** 수집기에 시간을 투자한 이유가 바로 이 구조다.
 
-**수집 스케줄링·API 호출을 n8n으로 재구현하지 않는다.** P6 사용자 동결 요건: 공식 294계정, A/B/C 3 API 레인, `limit=4`, 2라운드/최신 3페이지×4=계정당 최대 12개, 원본 변경 관측, 이후 누락 복구·영속 백필. [P6 동결 설계](https://github.com/hibi89/ohora-trend-catcher/blob/main/docs/P6_FINAL_COLLECTION_DESIGN_2026-10-20.md).
+- `hibi89/ohora-trend-catcher` (P6): Meta 원본, 재관측/지표 변화, 294 공식 계정·A/B/C 3 API 레인·`limit=4`·2라운드(최신 3페이지×4=계정당 최대 12개), 원본/변경 이력 소유.
+- **본 repo `hibi89/ohora-trend-analyzer`**: 승인된 P6 **읽기 전용 export**를 사용하여 AI 태깅, n8n 자동화, **별도 DERIVED DB**, 내부 운영 대시보드 담당.
+- 프론트엔드 담당자는 저장된 데이터만 조회. **F5/카드 클릭만으로 AI 재실행 금지.**
+- 제출 11/03, 발표 11/05. 본 주에는 **실행되는 최소 파이프라인 1건**을 우선한다.
 
-## 2. 오늘 태깅 작업 완료 사항
+## 3. 태그 계약 (변경 금지 원칙)
 
-- [x] 기존 F01~F14 14개 축 및 159개 ID·slug·한영일 표시명·동의어 보존. 동일 축 내 중복/alias 충돌 없음.
-- [x] **P0 7축 F01(18) F03(8) F05(12) F06(10) F08(12) F09(14) F10(10) = 84개** 세부 판정 기준 JSON.
-- [x] 나머지 P1 F02 F04 F07 F11 F12 F13 F14 = 75태그 사전 유지. 초기 AI는 분석하지 않으며 `not_evaluated` 표시.
-- [x] Astra 지적 반영: 시어/시럽/젤리, 옴브레/그라데이션, 크롬/미러, 캣아이/쉬머, 2D/3D 리본 등 혼동 규칙 10개.
-- [x] `observed` / `unknown` / `not_applicable` / `not_evaluated` 출력 상태 명시. 입력 불가·영상 분석 미지원은 job-level. v1.0의 `not_observed` 자동 치환 금지.
-- [x] `scripts/validate_taxonomy.py` 업로드: 원본 태그 보존, tag whitelist, 결과 P0/P1 구분, 필수 근거·상태·해시·timezone 검증.
-- [x] `tests/test_tagging_contract.py` (합성 22개) + `tests/test_json_schema_contract.py` (합성 14개) + `fixtures/sample_valid_tag_result.json` + `.github/workflows/taxonomy-check.yml` 등록.
-- [x] 정적 JSON 12개 검사 PASS, 로컬 동등코드 합성 테스트 85/85 PASS(추가 작업 최신판), 정규화 [JSON Schema](taxonomy/p0_tag_result.schema.json) 통과 및 QA 문서 기록. 별도 팀원용 Excel 7개 시트 완료(채팅 첨부, GitHub에는 없음).
+- 전체 F01~F14 **14축, 159개 고정 tag_id**. 색·발색·효과·기법·패턴·모티프·입체 장식 등 독립 축. S01~S04 관계 구조 정보는 향후 확장.
+- 첫 구현 P0는 **F01/F03/F05/F06/F08/F09/F10 7축·84개 세부 태그**. 나머지 7축은 `not_evaluated` 표시.
+- 태그상태: `observed`(보임), `unknown`(평가했지만 불확실), `not_applicable`(충분히 보인 범위에 해당 없음), `not_evaluated`(미평가). 구버전 `not_observed` 자동 변환 금지.
+- **존재와 부재 판정 모두 이미지 근거 필수**. 캡션에만 적힌 특징을 사진에서 확인했다고 주장하지 않는다. 부재 판정은 `scope` 및 근거 필수.
+- 비네일·이미지 접근 실패·비디오 프레임 미지원은 **job-level** 상태로 처리하고 가짜 14축 분석 결과 생성 금지.
+- `post_id`·`media_id`·`model_id`·`analyzed_at` 등은 모델이 아니라 **신뢰된 수집/실행 정보에서 기록**. 원본값·관측 시점·NULL vs 0 구분.
+- 캡션은 비신뢰 데이터/보조 근거. 숨겨진 지시문을 실행하지 않음. 태그 기준 모호 용어(시어/시럽/젤리, 크롬/미러, 그라데이션/옴브레, 자석/쉬머 등)는 tag_rules의 설명을 따른다.
+- v1.1 사전·tag_id 변경은 기존 데이터 호환을 검토해 **새 버전**으로만 발행.
 
-**중요 미검증:** 로컬 대응 구현 85개 테스트는 PASS이나, **GitHub 저장소의 실제 Actions CI 성공 로그는 현재 확보 못함**. `git clone` 네트워크 DNS 실패. 이미지 실분류·모델 예측 정확도·오호라 실무자 승인 또한 미검증. '실제 태깅 완성'이라고 말하지 않는다.
+## 4. 현재 실제 파일/실행 상태
 
-## 3. 10/21(수) 바로 시작할 최소 단위
+**구현/등록 완료:** 
+- `scripts/validate_taxonomy.py`: 원본 159 ID/84개 규칙 및 최종 14축 태그 whitelist·증거·상태 검사.
+- `scripts/validate_model_output.py`: 모델 제안 7축에 등록된 tag_id·visual evidence·자료형 확인.
+- `scripts/normalize_p0_result.py`: 모델 7축 + trusted metadata → 14축 정규화 JSON, DB 쓰기 없음.
+- `scripts/smoke_p0_pipeline.py`: synthetic fixture 2개를 사용해 전체 검증 명령 실행, Meta/AI/DB 요청 없음.
+- `taxonomy/p0_tag_result.schema.json`: 검증 후 저장할 정규화 결과의 JSON Schema, **VLM에 그대로 주는 형식 아님**.
+- `tests/test_tagging_contract.py` 35개, `tests/test_json_schema_contract.py` 23개, `tests/test_model_output_contract.py` 21개, `tests/test_normalize_p0_result.py` 13개, `tests/test_smoke_p0_pipeline.py` 5개 = **총 97개 정의**.
+- `.github/workflows/taxonomy-check.yml` 등록. **원격 CI 성공 여부 확인 못함**.
+- [실사진 평가 절차](docs/TAGGING_IMAGE_QA_PROTOCOL_v1_1.md)와 [빈 CSV](fixtures/human_review_template.csv) 준비.
 
-**첫 단계: 기존 검증기 실행 확인.**
+**미구현/미검증:** n8n workflow import, 실제 승인 이미지 VLM 분류 정확도, P6 실제 read-only export 연결, DERIVED DB writer/migration·idempotency, 내부 대시보드, 실사진 수동 검수. **"태깅 시스템 전체 완성"이라고 보고하지 말 것.**
+
+## 5. 내일 10/21 실행 순서
+
+### ① GitHub CI / 로컬 재검증
 ```bash
 python -m pip install -r requirements-test.txt
 python scripts/validate_taxonomy.py
 python scripts/validate_taxonomy.py --result fixtures/sample_valid_tag_result.json
 python -m scripts.validate_model_output --input fixtures/sample_p0_model_output.json
+python -m scripts.smoke_p0_pipeline
 python -m unittest discover -s tests -v
 ```
+97개가 실제로 통과하는지 확인하고, 실패 시 로그를 기반으로 최소 수정하라. 이전 코드 대응본의 85/85 PASS와 혼동하지 말 것.
 
-실패하면 원인 수정→최소 커밋→HANDOFF/STATUS 갱신. 2회 같은 방식으로 재시도하지 않는다.
+### ② n8n 합성 경로 1건
+- n8n 실행 환경(학교 서버/로컬, 버전, python executable/HTTP 접근) 확인.
+- P6가 승인한 **읽기 전용 export** 경로 확인. 경로 미확정 시 가상 input fixture 사용.
+- Manual Trigger → 가상 이미지/캡션 또는 승인된 샘플 → VLM의 7축 결과 → `validate_model_output` → `normalize_p0_output` → 14축 final validator → **별도 DERIVED 개발 DB**.
+- 실제 AI 호출/이미지 전송과 그 비용·API 권한은 사용자 승인 후.
+- 중복 API 호출 방지, 원자 저장, 실패 기록·재시도, F5 호출 0회 순서대로 구현.
 
-**그 다음: n8n 합성 1건.**
-1. 사용자에게 실제 n8n 환경(학원 원격/로컬, 버전/접속경로)과 파생 DB 선택, 모델 API/전송 권한 확인.
-2. P6 RAW 운영 DB를 열기 전에 승인된 **read-only export** 경로를 확인. 미확인 상태라면 `fixtures/sample_valid_tag_result.json`과 새 synthetic input fixture만 사용.
-3. Manual Trigger → synthetic image input → VLM P0 7축 → `tag_schema_v1_1.json` + `tag_rules_v1_1.json` 규칙 적용 → JSON 결과 validator → DERIVED test DB.
-4. 성공한 1건 다음에만 배치/캐러셀·중복 방지·오류 재시도 확장. 프론트엔드 F5는 읽기 전용.
+### ③ 진척 기록
+실행 파일/테스트 PASS 건수/커밋 SHA, 미확인·실환경 위험, 비용과 RAW 변경 여부를 이 문서 + `STATUS.md`에 동기화하고 GitHub 재조회.
 
-**사용자 승인 필요한 외부 조치:** 실제 Meta 호출·토큰 사용·P6 운영 DB 변경·외부 모델 이미지 전송·과금·실계정 294개 무인 스케줄. 이 저장소 작업 개시만으로 승인 아님.
+## 6. 절대 금지/보안
 
-## 4. 일정
+- 사용자의 **별도 승인 없이** 실 Meta 요청, Meta 인증 토큰 사용, P6 RAW/운영 DB 쓰기·마이그레이션, 기존 3 API limit/2라운드 수정, 무인 대량 실행, P6 main 병합 금지.
+- GitHub가 공개(public) 상태로 조회되므로 .env, 계정 토큰, 운영 DB/CSV, 실제 고객사 원본/사진 등 올리지 않기.
+- 승인되지 않은 이미지·캡션을 외부 유료 VLM으로 전송하지 말 것.
+- 병렬 브랜치나 중복 작업을 억지로 늘리지 말고 작은 단위로 구현·회귀.
+- 실이미지 없이 태깅 정확도 수치를 발표하지 말 것.
 
-| 날짜 | 단계 / 납품 상태 |
-|---|---|
-| 10/20(화) | D0 태깅표 v1.1 데이터 사전/설계/정적 검증 **완료** |
-| 10/21(수) | D1 fixture/P6 read-only adapter + D2 n8n 시작 **미착수** |
-| 10/22(목) | D2 7축 VLM 태깅 JSON + strict validation **미착수** |
-| 10/23(금) | D3 DERIVED DB 원자 저장/중복·오류 복구 **미착수** |
-| 10/24(토) | D4 내부 관리 대시보드 최소판 **미착수** |
-| 10/25(일) | D5 통합 테스트·프론트 계약 공유 **미착수** |
-| 11/03(화) | 제출 / 11/05(목) 발표 **예정** |
+## 7. 작업 연결용 문구
 
-## 5. 보안·분류 품질 규칙
+> `hibi89/ohora-trend-analyzer`를 GitHub에서 직접 조회하고 `AGENTS.md`, `HANDOFF.md`, `STATUS.md`, `docs/TAGGING_SMOKE_RUNBOOK_2026-10-20.md`를 읽어라. 태깅 v1.1은 F01~F14/159개 코드, P0 7축/84개, 모델 7축→정규화 14축 계약이다. 최신 97개 테스트는 **등록만 검증**됐고 GitHub CI PASS는 미확인이다. 우선 offline smoke/테스트를 실제 실행한 뒤, n8n 합성 1건으로 시작한다. RAW DB/Meta/실데이터/유료 AI 호출은 승인 전 금지하고 모든 변경 후 STATUS/HANDOFF를 갱신하라.
 
-- **RAW와 DERIVED 물리/권한 분리:** Analyzer는 원본을 읽기만, 분석 결과·검수 이력은 별도 DB. 과거 AI 원출력 덮어쓰기 금지.
-- **태깅 미디어 단위:** 하나의 게시물에 여러 이미지/디자인. `post_id` ≠ `media_id` ≠ `design_cluster_id`. 릴스 프레임 분석은 이번 주 미지원(링크/썸네일 메타만).
-- **분류 근거:** 이미지를 주근거, 캡션은 별도 속성. 실제 재료·시술 공정·제품 사용·상품 SKU·국가를 사진에서 임의 추측하지 않는다.
-- **시점/관측:** `posted_at`과 `observed_at` 구분. 좋아요/댓글 0은 NULL이 아니다. 출처·모델·프롬프트·taxonomy·분석 입력 해시·실행 시각·검수 상태 기록.
-- **다국어:** `tag_id`가 정본, ko/en/ja 표시명은 사전. 일본어 빈 값은 null 유지(검증 없이 번역 채우지 않음).
-- **DB 갱신:** F5나 UI 카드 클릭은 API/AI 호출 금지, 저장된 DERIVED 조회만.
-- **외부 비밀:** .env/토큰/실 DB·CSV/고객사 파일 원본 Git 업로드 금지. **현재 GitHub repo가 public으로 조회됨**. 공개범위 변경은 사용자가 결정할 사항.
-
-## 6. 이번 작업 결과 증거
-
-- 등록 파일: `taxonomy/tag_schema_v1_1.json`, `taxonomy/tag_rules_v1_1.json`, `docs/TAXONOMY_RULEBOOK_v1_1.md`, `docs/TAXONOMY_QA_2026-10-20.md`, `scripts/validate_taxonomy.py`, `tests/test_tagging_contract.py`, `tests/test_json_schema_contract.py`, `taxonomy/p0_tag_result.schema.json`, `requirements-test.txt`, `fixtures/sample_valid_tag_result.json`, `.github/workflows/taxonomy-check.yml`.
-- GitHub에서 사전·규칙·fixture·검증 코드를 fetch-back 하여 정적 검사 12/12 PASS. 85개 Python 합성 테스트는 **로컬 대응본에서 85/85 PASS**, 연결된 GitHub Actions CI는 **실행 상태/성공 미확인**.
-- rollback은 v1.1 신규 파일·그 관련 코드와 테스트를 revert하는 것으로 가능. 기존 v1.0-draft 및 P6 RAW는 변경 없음.
-
-## 7. 반드시 남길 인수인계 형식
-
-```text
-UTC/KST date, repository, branch, HEAD commit:
-변경 파일/기능:
-실행한 테스트 (명령, 실제 PASS 증거):
-미실행·실운영 미검증:
-RAW/토큰/Meta 작업 여부:
-롤백/다음 최소 작업:
-HANDOFF.md + STATUS.md 최신화 및 GitHub fetch-back:
-```
-
-프로젝트 번호: **미배정**. 번호 등록부/BOOK에서 실 매핑 확인 전 임의 번호 할당 금지.
-
-## 다음날 세부 실행 로드맵 (2026-10-21)
-
-1. GitHub checkout/Actions에서 **등록된 85개 synthetic tests를 실제 해당 커밋으로 재검증** (기존에는 로컬 동등 코드만 검증); 실패 항목만 보수.
-2. n8n 실행 환경과 외부 비전 AI 호출 권한·비용 및 실이미지 전송 범위 확인. P6 RAW는 승인된 read-only export만.
-3. **모델에 7개 P0 축을 요청** → `validate_model_output` → `normalize_p0_output(model_result, trusted_metadata)` → `check_result` 및 JSON Schema → **별도 DERIVED 개발 DB**에만 저장. 이 연결은 설계만 준비됐으며 n8n 실제 연동은 미구현.
-4. 동일 이미지 중복 AI 호출 방지·실패 기록·비네일 작업 분기 및 화면 조회가 재분석을 일으키지 않는지 후속 검증.
-5. 개인정보/운영 원본·Meta 토큰·실비용·서비스 활성화 등은 별도 사용자 승인 필요. 공개 저장소에는 첨부 금지.
-
-참조 정본: `taxonomy/tag_schema_v1_1.json`, `taxonomy/tag_rules_v1_1.json`, `taxonomy/p0_tag_result.schema.json`. **오호라 공식 내부 태깅표가 아닌 프로젝트 제안 기준**.
+프로젝트 번호: **미배정**. 프로젝트 번호 등록부 확인 전 P6 번호를 복사하지 않는다.
