@@ -1,5 +1,8 @@
 # STATUS — OHORA Trend Analyzer
 
+> **2026-10-22 KST · 승인된 저장소 경계 / 개발 대기:** 수집 Meta·RAW·Capture·SQLite·수집용 n8n tick은 P6 `ohora-trend-catcher`가 계속 소유. **본 Analyzer는 분석용 n8n·AI 7축 검증/14축 정규화·독립 DERIVED DB·읽기 전용 내부 대시보드 전담**. 기존 팀 프론트 `ohora-nail-intelligence-v4`는 표현 계층으로 유지. 상세: [approved boundaries and first E2E](docs/APPROVED_REPO_BOUNDARIES_AND_FIRST_E2E_2026-10-22.md); 다음 실제 구현 단위: [Analyzer D1 Issue #1](https://github.com/hibi89/ohora-trend-analyzer/issues/1). **이번 단계는 설계 의사결정 GitHub 기록만 완료**, n8n 실행/DERIVED writer/운영 데이터/Google Sheets 쓰기/유료 AI 호출 0. P6 `1417a8e` CI 6/6 통과 기록과 Analyzer 자체 미검증 97개 테스트는 별개의 상태. P6 Sheets manual pilot JSON은 동기화 참고 자산으로 보존, Analyzer와 이중 활성화하지 않음. Media adapter는 관측행 exporter와 별도 검증 필요.
+
+
 > **최종 갱신: 2026-10-20 KST, 오늘 태깅표 추가 품질 점검 완료.** GitHub `hibi89/ohora-trend-analyzer`의 `main` 기준. **n8n·유료 VLM/Meta 실호출·운영 RAW/DERIVED DB 변경 없음.**
 >
 > **현 상태: 태깅 사전 v1.1과 합성 검증 코드 등록 완료. 최신 Python 테스트 97개가 저장소에 정의되어 있으나 GitHub Actions 최신 CI 통과는 확인되지 않았다.** 과거 로컬 대응 코드의 85/85 PASS는 이전 버전 이력이며, 이번 추가된 97개가 실행·통과했다는 증거가 아니다.
