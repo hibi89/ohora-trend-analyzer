@@ -1,5 +1,8 @@
 # STATUS — OHORA Trend Analyzer
 
+> **2026-10-22 KST · 프로젝트 번호 p8 확정:** Analyzer(`hibi89/ohora-trend-analyzer`)는 **p8: n8n 분석 자동화·AI 태깅·DERIVED DB·읽기 전용 대시보드/Sheets 활용** 전담. 기존 P6(`hibi89/ohora-trend-catcher`)는 **p6: Meta 수집·RAW/Capture·SQLite·수집 tick** 전담을 유지한다. 사용자 승인으로 **p6/p8 투트랙** 진행하며 저장소 병합·코드 이관 없음. 번호 정본: [BOOK.md](https://github.com/hibi89/project-book/blob/main/BOOK.md). p8의 다음 실제 구현 단위는 [Issue #1](https://github.com/hibi89/ohora-trend-analyzer/issues/1) 합성 1건→태깅 검증→별도 DERIVED SQLite→조회; 현재 여전히 **구현 대기**, 실제 n8n·VLM·운영 데이터·Sheets 미실행.
+
+
 > **2026-10-22 KST · 승인된 저장소 경계 / 개발 대기:** 수집 Meta·RAW·Capture·SQLite·수집용 n8n tick은 P6 `ohora-trend-catcher`가 계속 소유. **본 Analyzer는 분석용 n8n·AI 7축 검증/14축 정규화·독립 DERIVED DB·읽기 전용 내부 대시보드 전담**. 기존 팀 프론트 `ohora-nail-intelligence-v4`는 표현 계층으로 유지. 상세: [approved boundaries and first E2E](docs/APPROVED_REPO_BOUNDARIES_AND_FIRST_E2E_2026-10-22.md); 다음 실제 구현 단위: [Analyzer D1 Issue #1](https://github.com/hibi89/ohora-trend-analyzer/issues/1). **이번 단계는 설계 의사결정 GitHub 기록만 완료**, n8n 실행/DERIVED writer/운영 데이터/Google Sheets 쓰기/유료 AI 호출 0. P6 `1417a8e` CI 6/6 통과 기록과 Analyzer 자체 미검증 97개 테스트는 별개의 상태. P6 Sheets manual pilot JSON은 동기화 참고 자산으로 보존, Analyzer와 이중 활성화하지 않음. Media adapter는 관측행 exporter와 별도 검증 필요.
 
 
